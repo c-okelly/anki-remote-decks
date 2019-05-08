@@ -1,0 +1,11 @@
+language: python
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+# command to install dependencies
+install:
+  - pip install codecov
+# command to run tests
+script:
+  - python3 setup.py nosetests -v --with-coverage --cover-package=org_to_anki
