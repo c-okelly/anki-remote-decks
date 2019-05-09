@@ -2,6 +2,7 @@ import requests
 import codecs
 from bs4 import BeautifulSoup
 import re
+from .libs.org_to_anki.org_parser.parseData import buildNamedDeck
 
 # Should get the remote deck and return an Anki Deck
 def getRemoteDeck(url):
@@ -9,9 +10,10 @@ def getRemoteDeck(url):
     # Get remote page
     # TODO Validate url before getting data
     pageType = _determinePageType(url)
+    deck = None
     if pageType == "html":
         data = _download(url)
-        orgPage = _parseHtmlPageToOrgFile(data)
+        deck = _parseHtmlPageToAnkiDeck(data)
 
     elif pageType == "csv":
         pass
@@ -23,28 +25,35 @@ def getRemoteDeck(url):
 def _determinePageType(url):
 
     # TODO use url to determine page types
-    if (True):
+    csvString = "/spreadsheets/"
+    documentString = "/document/"
+    if (documentString in url):
         return "html"
-    elif (False):
+    elif (csvString in url):
         return "csv"
     else:
         return None
 
 
-def _parseHtmlPageToOrgFile(data):
+def _parseHtmlPageToAnkiDeck(data):
 
     orglist = _generateOrgListFromHtmlPage(data)
+
+    # TODO update org_to_anki to have function for this
+    deck = buildNamedDeck(orglist, "test.file")
+
+    return deck
 
 def _generateOrgListFromHtmlPage(data):
 
     orgStar = "*"
-    imageTemplate = "[{}]"
+    imageTemplate = " [{}]"
     soup = BeautifulSoup(data, 'html.parser')
     contents = soup.find("div", {"id":"contents"})
 
     orgFormattedFile = []
     for item in contents:
-        print(item)
+        # print(item)
         if item.name == "p":
             # print("p")
             lineText = item.text
@@ -52,19 +61,19 @@ def _generateOrgListFromHtmlPage(data):
                 orgFormattedFile.append(lineText)
 
             # Check if line contains an image
-            # print(item.find_all("img"))
-            images = item.find_all("img")
-            if len(images) == 1:
-                # print("found an image")
-                imageText = imageTemplate.format(images[0]["src"])
-                orgFormattedFile.append(imageText)
+            # TODO this has been disabled for MVP
+            # images = item.find_all("img")
+            # if len(images) == 1:
+            #     # print("found an image")
+            #     imageText = imageTemplate.format(images[0]["src"])
+            #     orgFormattedFile.append(imageText)
 
             # TODO support multiple images after MVP and test
-            elif len(images) > 1:
-                raise Exception("Only one image per a line")
+            # elif len(images) > 1:
+            #     raise Exception("Only one image per a line")
 
         elif item.name == "ul":
-            print("ul")
+            # print("ul")
             listItems = item.find_all("li")
 
             # Item class is in the format of "lst-kix_f64mhuyvzb86-1" with last numbers as the level
@@ -90,11 +99,6 @@ def _generateOrgListFromHtmlPage(data):
             orgFormattedFile.append(formattedListItem)
         else:
             print("Unknown line type: {}".format(item.name))
-        
-        # print(x.name)
-        print()
-
-    
 
     return orgFormattedFile
 

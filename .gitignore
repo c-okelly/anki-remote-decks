@@ -6,6 +6,9 @@ __pycache__/
 # Releases
 release_*.zip
 
+# org_to_anki submodule
+src/remote_decks/libs
+
 
 # C extensions
 *.so
