@@ -1,0 +1,23 @@
+{
+    "result": [
+        {
+            "noteId":1502298033750,
+            "modelName": "Basic",
+            "tags":["tag"],
+            "fields": {
+                "Front": {"value": "First question", "order": 0},
+                "Back": {"value": "<ul style='list-style-position: inside;'><li>First answer</li></ul>", "order": 1}
+            }
+        },
+        {
+            "noteId":1502298033751,
+            "modelName": "Basic",
+            "tags":["tag"],
+            "fields": {
+                "Front": {"value": "Second question", "order": 0},
+                "Back": {"value": "<ul style='list-style-position: inside;'><li>Second answer</li></ul>", "order": 1}
+            }
+        }
+    ],
+    "error": null
+}

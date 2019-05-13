@@ -10,6 +10,7 @@ try:
     from aqt.importing import ImportDialog
     from .remote_decks.main import addNewDeck
     from .remote_decks.main import syncDecks
+    from .remote_decks.main import getCards
 except:
     QAction = None
     mw = None
@@ -18,6 +19,8 @@ except:
 def addNewDeck():
 
     showInfo("addNewDeck")
+    getCards()
+
 
 
 def syncDecks():

@@ -11,6 +11,17 @@ except:
     mw = None
     pass
 
+from .ankiBridge import AnkiBridge
+
+def getCards():
+
+    ankiBridge = AnkiBridge()
+    deckName = "0. ListNotes"
+
+    data = ankiBridge.getDeckNotes(deckName)
+
+    showInfo("{}".format(data))
+
 def syncDecks():
 
     # Get all remote decks from config
