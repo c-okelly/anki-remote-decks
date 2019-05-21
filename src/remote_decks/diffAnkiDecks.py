@@ -1,5 +1,6 @@
 
-from src.remote_decks.libs.org_to_anki.ankiConnectWrapper.AnkiNoteBuilder import AnkiNoteBuilder
+from .libs.org_to_anki.ankiConnectWrapper.AnkiNoteBuilder import AnkiNoteBuilder
+from aqt.utils import showInfo
 
 def diffAnkiDecks(orgAnkiDeck, ankiBaseDeck):
 

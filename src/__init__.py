@@ -8,7 +8,7 @@ try:
     # import all of the Qt GUI library
     from aqt.qt import *
     from aqt.importing import ImportDialog
-    from .remote_decks.main import addNewDeck
+    from .remote_decks.main import addNewDeck as mainAddNewDeck
     from .remote_decks.main import syncDecks
     from .remote_decks.main import getCards
 except:
@@ -19,7 +19,9 @@ except:
 def addNewDeck():
 
     showInfo("addNewDeck")
-    getCards()
+    url = "https://docs.google.com/document/d/e/2PACX-1vRXWGu8WvCojrLqMKsf8dTOWstrO1yLy4-8x5nkauRnMyc4iXrwkwY3BThXHc3SlCYqv8ULxup3QiOX/pub"
+
+    mainAddNewDeck(url)
 
 
 

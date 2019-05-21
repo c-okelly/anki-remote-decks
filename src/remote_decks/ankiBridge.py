@@ -5,17 +5,57 @@ from aqt.utils import showInfo
 # except:
 #     apt = None
 
+from .libs.org_to_anki.ankiConnectWrapper.AnkiNoteBuilder import AnkiNoteBuilder
+from .libs.org_to_anki.ankiConnectWrapper.AnkiBridge import AnkiBridge as org_AnkiBridge
+
 class AnkiBridge:
 
     def __init__(self):
         # if (apt != None):
         self.collection = aqt.mw.col
+        self.AnkiNoteBuilder = AnkiNoteBuilder()
+        self.org_AnkiBridge = org_AnkiBridge()
+    
+
+    ### Helper functions ###
+    def _collection():
+        return aqt.mw.col
+    def startEditing(self):
+        self.window().requireReset()
+    def stopEditing(self):
+        if self.collection() is not None:
+            self.window().maybeReset()
+
+    ### Core functions
+    def addNote(self, note):
+        note = self.AnkiNoteBuilder.buildNote(note)
+        return self.org_AnkiBridge.addNote(note)
+
+    def deleteNotes(self, noteIds):
+        self.startEditing()
+        try:
+            self._collection().remNotes(notes)
+        finally:
+            self.stopEditing()
+
+    def updateNoteFields(self, note):
+
+        note = self.AnkiNoteBuilder.buildNote()
+        ankiNote = self._collection().getNote(note['id'])
+        if ankiNote is None:
+            raise Exception('note was not found: {}'.format(note['id']))
+
+        for name, value in note['fields'].items():
+            if name in ankiNote:
+                ankiNote[name] = value
+
+        ankiNote.flush()
 
     # Core current method
     def getDeckNotes(self, deckName):
 
         cardIds = self._getAnkiCardIdsForDeck(deckName)
-        showInfo("{}".format(cardIds))
+        # showInfo("{}".format(cardIds))
 
         cards = self._getCardsFromIds(cardIds)
 
@@ -27,8 +67,11 @@ class AnkiBridge:
         # TODO should check if deck name is in the correct format
 
         # Make query to Anki
-        queryTemplate = "deck:'{}'"
+        queryTemplate = "'deck:{}'"
+
         query = queryTemplate.format(deckName)
+        # showInfo("{}".format(query))
+
         ids = self.collection.findNotes(query)
 
         return ids
