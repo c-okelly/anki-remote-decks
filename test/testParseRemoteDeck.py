@@ -18,6 +18,16 @@ def testDetermineFileType():
     urlType = _determinePageType(url)
     assert(urlType == "csv")
 
+def testGetDeckName():
+
+    testFile = "test/testData/remote_deck_test.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+    
+    deck = _parseHtmlPageToAnkiDeck(testFileData)
+
+    assert(deck.deckName == "remote_deck_test")
+
 def testDownloadWebPage():
     url = "https://www.example.com"
     data = _download(url)
@@ -31,7 +41,7 @@ def testParseGoogleDocToOrgFile():
         testFileData = f.read()
 
     expectedData = ['Test', '# Test', '* Level 1', '** Level 2', '*** Level 3', '**** Level 4', '* Level 1.1', '** Level 2.1']
-    orgPage = _generateOrgListFromHtmlPage(testFileData)
+    orgPage = _generateOrgListFromHtmlPage(testFileData)["data"]
     assert(orgPage == expectedData)
 
 

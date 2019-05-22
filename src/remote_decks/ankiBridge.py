@@ -15,33 +15,43 @@ class AnkiBridge:
         self.collection = aqt.mw.col
         self.AnkiNoteBuilder = AnkiNoteBuilder()
         self.org_AnkiBridge = org_AnkiBridge()
-    
 
     ### Helper functions ###
     def _collection():
         return aqt.mw.col
-    def startEditing(self):
-        self.window().requireReset()
-    def stopEditing(self):
-        if self.collection() is not None:
-            self.window().maybeReset()
+    # def startEditing(self):
+    #     self.window().requireReset()
+    # def stopEditing(self):
+    #     if self.collection() is not None:
+    #         self.window().maybeReset()
 
     ### Core functions
+    def createDeck(self, deck):
+        # try:
+        #     self.startEditing()
+        did = aqt.mw.col.decks.id(deck)
+        # finally:
+        #     self.stopEditing()
+
+        return did
+
     def addNote(self, note):
         note = self.AnkiNoteBuilder.buildNote(note)
         return self.org_AnkiBridge.addNote(note)
 
-    def deleteNotes(self, noteIds):
-        self.startEditing()
-        try:
-            self._collection().remNotes(notes)
-        finally:
-            self.stopEditing()
+    def deleteNotes(self, noteId):
+        # self.startEditing()
+        # try:
+        aqt.mw.col.remNotes([noteId])
+        # finally:
+        #     self.stopEditing()
 
     def updateNoteFields(self, note):
 
-        note = self.AnkiNoteBuilder.buildNote()
-        ankiNote = self._collection().getNote(note['id'])
+        showInfo("{}".format(note['id']))
+
+        ankiNote = aqt.mw.col.getNote(note['id'])
+        showInfo("{}".format(ankiNote))
         if ankiNote is None:
             raise Exception('note was not found: {}'.format(note['id']))
 

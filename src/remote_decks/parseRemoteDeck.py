@@ -37,10 +37,12 @@ def _determinePageType(url):
 
 def _parseHtmlPageToAnkiDeck(data):
 
-    orglist = _generateOrgListFromHtmlPage(data)
+    orgData = _generateOrgListFromHtmlPage(data)
+    deckName = orgData["deckName"]
+    data = orgData["data"]
 
     # TODO update org_to_anki to have function for this
-    deck = buildNamedDeck(orglist, "test.file")
+    deck = buildNamedDeck(data, deckName)
 
     return deck
 
@@ -49,6 +51,8 @@ def _generateOrgListFromHtmlPage(data):
     orgStar = "*"
     imageTemplate = " [{}]"
     soup = BeautifulSoup(data, 'html.parser')
+    header = soup.find("div", {"id":"header"})
+    deckName = header.text
     contents = soup.find("div", {"id":"contents"})
 
     orgFormattedFile = []
@@ -100,7 +104,7 @@ def _generateOrgListFromHtmlPage(data):
         else:
             print("Unknown line type: {}".format(item.name))
 
-    return orgFormattedFile
+    return {"deckName":deckName, "data":orgFormattedFile}
 
 def _download(url):
 

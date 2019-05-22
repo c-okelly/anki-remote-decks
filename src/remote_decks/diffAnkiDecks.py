@@ -1,6 +1,9 @@
 
+try:
+    from aqt.utils import showInfo
+except:
+    pass
 from .libs.org_to_anki.ankiConnectWrapper.AnkiNoteBuilder import AnkiNoteBuilder
-from aqt.utils import showInfo
 
 def diffAnkiDecks(orgAnkiDeck, ankiBaseDeck):
 

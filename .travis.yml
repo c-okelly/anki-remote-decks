@@ -8,4 +8,5 @@ install:
   - pip install codecov
 # command to run tests
 script:
+  - ./installOrgToAnki.sh
   - python3 setup.py nosetests -v --with-coverage --cover-package=org_to_anki
