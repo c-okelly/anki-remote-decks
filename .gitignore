@@ -7,7 +7,8 @@ __pycache__/
 release_*.zip
 
 # org_to_anki submodule
-src/remote_decks/libs
+src/remote_decks/libs/*
+!src/remote_decks/libs/__init__.py
 
 
 # C extensions

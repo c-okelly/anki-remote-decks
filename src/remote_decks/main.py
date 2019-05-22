@@ -82,7 +82,9 @@ def _syncNewData(deckDiff):
         showInfo("{}".format(i["question"]))
 
         question = i["question"]
-        ankiBridge.addNote(question)
+        # Need to build question before adding to deck
+        builtQuestion = ankiNoteBuilder.buildNote(question)
+        ankiBridge.addNote(builtQuestion)
     
     # Update existing questions
     for i in updatedQuestion:
