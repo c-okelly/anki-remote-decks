@@ -11,9 +11,11 @@ except:
     mw = None
     pass
 
-from .ankiBridge import AnkiBridge
 from .diffAnkiDecks import diffAnkiDecks
 from .parseRemoteDeck import getRemoteDeck
+
+# TODO replace all imports with external ones
+from .libs.org_to_anki.utils import getAnkiPluginConnector
 
 # TODO only for quick testing
 from .libs.org_to_anki.org_parser.parseData import parse
@@ -24,7 +26,7 @@ from .libs.org_to_anki.ankiConnectWrapper.AnkiNoteBuilder import AnkiNoteBuilder
 
 def getCards():
 
-    ankiBridge = AnkiBridge()
+    ankiBridge = getAnkiPluginConnector()
     deckName = "0. ListNotes"
 
     data = ankiBridge.getDeckNotes(deckName)
@@ -34,7 +36,7 @@ def getCards():
 def syncDecks():
 
     # Get all remote decks from config
-    ankiBridge = AnkiBridge()
+    ankiBridge = AnkgetAnkiPluginConnectoriBridge()
     deckName = "0. List Notes::multiple"
 
     # TODO this is nonsense
@@ -69,7 +71,7 @@ def syncDecks():
 
 def _syncNewData(deckDiff):
 
-    ankiBridge = AnkiBridge()
+    ankiBridge = getAnkiPluginConnector()
     ankiNoteBuilder = AnkiNoteBuilder()
 
     newQuestion = deckDiff["newQuestions"]
@@ -115,7 +117,7 @@ def addNewDeck():
 
 
     # Get data and build deck
-    ankiBridge = AnkiBridge()
+    ankiBridge = getAnkiPluginConnector()
 
     showInfo("Getting remote data")
     deck = getRemoteDeck(url)
@@ -123,7 +125,7 @@ def addNewDeck():
 
     # TODO Need to ensure the deck has been created
     deck.deckName = "multiple"
-    ankiBridge.createDeck("0. List Notes::multiple")
+    # ankiBridge.createDeck("0. List Notes::multiple")
 
     for q in deck.getQuestions():
         # TODO needs to be able to handle duplicate cards

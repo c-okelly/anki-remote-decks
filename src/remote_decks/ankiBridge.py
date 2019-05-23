@@ -43,8 +43,6 @@ class AnkiBridge:
         # self.startEditing()
         # try:
         aqt.mw.col.remNotes([noteId])
-        # finally:
-        #     self.stopEditing()
 
     def updateNoteFields(self, note):
 
