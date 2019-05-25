@@ -9,7 +9,7 @@ find . -name "*.pyc" -type f -delete
 find . -name "*__pycache__" -type d -delete
 
 cd src
-zip -r ../${FILE_NAME} __init__.py remote_decks/
+zip -r ../${FILE_NAME} __init__.py config.json remote_decks/
 
 cd ..
 

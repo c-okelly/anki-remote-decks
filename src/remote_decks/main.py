@@ -36,37 +36,29 @@ def getCards():
 def syncDecks():
 
     # Get all remote decks from config
-    ankiBridge = AnkgetAnkiPluginConnectoriBridge()
-    deckName = "0. List Notes::multiple"
+    ankiBridge = getAnkiPluginConnector()
+    baseDeck = ankiBridge.defaultDeck
+    deckJoiner = "::"
 
-    # TODO this is nonsense
-    currentAnkiDeck = {"result":ankiBridge.getDeckNotes(deckName)}
+    # TODO replace with a for loop over remotedecks
+    testUrl = "https://docs.google.com/document/d/e/2PACX-1vSCONQrUf_aMe79f1D-EKTJ9FJUpirSJAa5EZe2vWFu9dSnBPZzzkYjUYhUZ6oW2I63s5tkFHOEnE5g/pub"
+    remoteDeck = {"url": "https://docs.google.com/document/d/e/2PACX-1vRXWGu8WvCojrLqMKsf8dTOWstrO1yLy4-8x5nkauRnMyc4iXrwkwY3BThXHc3SlCYqv8ULxup3QiOX/pub", "deckName": "remote_deck"}
+    remoteDeck["url"] = testUrl
 
-    orgDeck = parse("/Users/conorokelly/Desktop/Personal_Dev/anki-remote-decks/test/testData/multiple.org")
-    # TODO deck name issues
-    # orgDeck.deckName = "0. List Notes::multiple"
+    # Main part
+    # Get current deck
+    deckName = baseDeck + deckJoiner + remoteDeck["deckName"]
+    localDeck = {"result":ankiBridge.getDeckNotes(deckName)}
 
-    # showInfo("currentDeck: {}".format(currentAnkiDeck))
-    # showInfo("orgDeck: {}".format(orgDeck))
+    # Get Remote deck
+    remoteDeck = getRemoteDeck(remoteDeck["url"])
 
-    deckDiff = diffAnkiDecks(orgDeck, currentAnkiDeck)
-
+    # Diff decks and sync
+    deckDiff = diffAnkiDecks(remoteDeck, localDeck)
     _syncNewData(deckDiff)
 
-    # showInfo("deckDiff: {}".format(deckDiff))
-
-
-    # showInfo("New question")
-    # for i in deckDiff["newQuestions"]:
-    #     showInfo("{}".format(i["question"]))
-
-    # showInfo("Updated")
-    # for i in deckDiff["questionsUpdated"]:
-    #     showInfo("{}".format(i["question"]))
-
-    # showInfo("Removed")
-    # for i in deckDiff["removedQuestions"]:
-    #     showInfo("{}".format(i["question"]))
+    # orgDeck = parse("/Users/conorokelly/Desktop/Personal_Dev/anki-remote-decks/test/testData/multiple.org")
+    # For testing
 
 
 def _syncNewData(deckDiff):
@@ -105,29 +97,31 @@ def _syncNewData(deckDiff):
         ankiBridge.deleteNotes(noteId)
 
 
-
-
 def addNewDeck():
-
     
     # Get url from user
+    # TODO remove hardcoded url
     url = "https://docs.google.com/document/d/e/2PACX-1vRXWGu8WvCojrLqMKsf8dTOWstrO1yLy4-8x5nkauRnMyc4iXrwkwY3BThXHc3SlCYqv8ULxup3QiOX/pub"
-
-    # Add url to user data
-
+    url, okPressed = QInputDialog.getText(mw, "Get Remote Deck url","Remote Deck url:", QLineEdit.Normal, "")
+    if okPressed == False:
+        return
 
     # Get data and build deck
     ankiBridge = getAnkiPluginConnector()
-
-    showInfo("Getting remote data")
     deck = getRemoteDeck(url)
-    showInfo("adding data to deck")
+    deckName = deck.deckName
 
-    # TODO Need to ensure the deck has been created
-    deck.deckName = "multiple"
-    # ankiBridge.createDeck("0. List Notes::multiple")
+    # Add url to user data
+    config = ankiBridge.getConfig()
 
-    for q in deck.getQuestions():
-        # TODO needs to be able to handle duplicate cards
-        showInfo("{}".format(q))
-        ankiBridge.addNote(q)
+    if config["remote-decks"].get(url, None) != None:
+        showInfo("Decks has already been added for: {}".format(url))
+        return
+    
+    config["remote-decks"][url] = {"url": url, "deckName": deckName}
+
+    # Upload new deck
+    ankiBridge.uploadNewDeck(deck)
+
+    # Update config on success
+    ankiBridge.writeConfig(config)
