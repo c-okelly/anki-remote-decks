@@ -9,4 +9,9 @@ install:
   - ./installOrgToAnki.sh
 # command to run tests
 script:
+<<<<<<< HEAD
   - python3 setup.py nosetests -v --with-coverage --cover-package=org_to_anki
+=======
+  - ./installOrgToAnki.sh
+  - python3 setup.py nosetests
+>>>>>>> d01859ae66272f2b5e8c5c77907b07e9815790c9
