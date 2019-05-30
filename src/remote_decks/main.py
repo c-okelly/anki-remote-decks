@@ -11,18 +11,15 @@ except:
     mw = None
     pass
 
+# Project deps
 from .diffAnkiDecks import diffAnkiDecks
 from .parseRemoteDeck import getRemoteDeck
 
-# TODO replace all imports with external ones
+# Install 3rd party library deps
 from .libs.org_to_anki.utils import getAnkiPluginConnector
 from .libs.org_to_anki.utils import getAnkiNoteBuilder
 
-# TODO only for quick testing
-from .libs.org_to_anki.org_parser.parseData import parse
 
-
-# TODO => need to get the correct file name
 
 def getCards():
 
@@ -40,33 +37,32 @@ def syncDecks():
     baseDeck = ankiBridge.defaultDeck
     deckJoiner = "::"
 
-    # TODO replace with a for loop over remotedecks
-    testUrl = "https://docs.google.com/document/d/e/2PACX-1vSCONQrUf_aMe79f1D-EKTJ9FJUpirSJAa5EZe2vWFu9dSnBPZzzkYjUYhUZ6oW2I63s5tkFHOEnE5g/pub"
-    testDeckName = "remote_deck"
-    rd= {"url": "https://docs.google.com/document/d/e/2PACX-1vRXWGu8WvCojrLqMKsf8dTOWstrO1yLy4-8x5nkauRnMyc4iXrwkwY3BThXHc3SlCYqv8ULxup3QiOX/pub", "deckName": "remote_deck"}
-    rd["url"] = testUrl
-    rd["deckName"] = testDeckName
+    # Get config data
+    remoteData = ankiBridge.getConfig()
 
+    for deckKey in remoteData["remote-decks"].keys():
+        currentRemoteInfo = remoteData["remote-decks"][deckKey]
 
-    # Get Remote deck
-    remoteDeck = getRemoteDeck(rd["url"])
-    showInfo("{}".format(remoteDeck))
-    remoteDeck.deckName = testDeckName # Remove
+        # Get Remote deck
+        deckName = currentRemoteInfo["deckName"]
+        remoteDeck = getRemoteDeck(currentRemoteInfo["url"])
 
-    # Get current deck
-    deckName = baseDeck + deckJoiner + rd["deckName"]
-    localDeck = {"result":ankiBridge.getDeckNotes(deckName)}
+        # Update deckname to one specificed in stored data
+        remoteDeck.deckName = deckName
 
-    # Local deck is missing
-    # TODO check deck exists
-    if localDeck == None:
-        ankiBridge.uploadNewDeck(remoteDeck)
-        return
+        # Get current deck
+        deckName = baseDeck + deckJoiner + deckName
+        localDeck = {"result":ankiBridge.getDeckNotes(deckName)}
 
+        # Local deck has no cards
+        if localDeck["result"] == []:
+            ankiBridge.uploadNewDeck(remoteDeck)
+            showInfo("{}".format("Uploading new deck"))
+            return
 
-    # Diff decks and sync
-    deckDiff = diffAnkiDecks(remoteDeck, localDeck)
-    _syncNewData(deckDiff)
+        # Diff decks and sync
+        deckDiff = diffAnkiDecks(remoteDeck, localDeck)
+        _syncNewData(deckDiff)
 
 def _syncNewData(deckDiff):
 
@@ -102,7 +98,7 @@ def _syncNewData(deckDiff):
 def addNewDeck():
     
     # Get url from user
-    url = "https://docs.google.com/document/d/e/2PACX-1vRXWGu8WvCojrLqMKsf8dTOWstrO1yLy4-8x5nkauRnMyc4iXrwkwY3BThXHc3SlCYqv8ULxup3QiOX/pub"
+    # url = "https://docs.google.com/document/d/e/2PACX-1vRXWGu8WvCojrLqMKsf8dTOWstrO1yLy4-8x5nkauRnMyc4iXrwkwY3BThXHc3SlCYqv8ULxup3QiOX/pub"
     url, okPressed = QInputDialog.getText(mw, "Get Remote Deck url","Remote Deck url:", QLineEdit.Normal, "")
     if okPressed == False:
         return
