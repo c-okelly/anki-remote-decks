@@ -4,8 +4,7 @@
 
 Anki Addon to allows users to create decks in Google docs that can then by synced with Anki. The remote deck acts as the source of truth. When a user sync their local deck to a remote cards are added / updated / deleated. When cards are updated (excluding the primary field) thier history is preserved.
 
-// TODO
-Offical Addon => [Anki Remote Decks](link)
+Offical Addon => [Anki Remote Decks](https://ankiweb.net/shared/info/911568091)
 
 # This Addon is in Alpha so might easily break but the basic api should remain stable going forward.
 
