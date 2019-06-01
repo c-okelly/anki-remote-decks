@@ -19,21 +19,13 @@ from .parseRemoteDeck import getRemoteDeck
 from .libs.org_to_anki.utils import getAnkiPluginConnector
 from .libs.org_to_anki.utils import getAnkiNoteBuilder
 
-
-
-def getCards():
-
-    ankiBridge = getAnkiPluginConnector()
-    deckName = "0. ListNotes"
-
-    data = ankiBridge.getDeckNotes(deckName)
-
-    showInfo("{}".format(data))
+remoteDefaultDeck = "Remote Decks"
 
 def syncDecks():
 
     # Get all remote decks from config
-    ankiBridge = getAnkiPluginConnector()
+    ankiBridge = getAnkiPluginConnector(remoteDefaultDeck)
+
     baseDeck = ankiBridge.defaultDeck
     deckJoiner = "::"
 
@@ -66,7 +58,7 @@ def syncDecks():
 
 def _syncNewData(deckDiff):
 
-    ankiBridge = getAnkiPluginConnector()
+    ankiBridge = getAnkiPluginConnector(remoteDefaultDeck)
     ankiNoteBuilder = getAnkiNoteBuilder()
 
     newQuestion = deckDiff["newQuestions"]
@@ -74,10 +66,18 @@ def _syncNewData(deckDiff):
     removedQuestion = deckDiff["removedQuestions"]
 
     # Add new question
+    duplicateQuestion = 0
     for i in newQuestion:
         question = i["question"]
-        ankiBridge.addNote(question)
-    
+        try:
+            ankiBridge.addNote(question)
+        # Catch Duplicate card exceptions otherwise rethrow
+        except Exception as e:
+            if e.args[0] == "cannot create note because it is a duplicate":
+                duplicateQuestion += 1
+            else:
+                raise e
+
     # Update existing questions
     for i in updatedQuestion:
         question = i["question"]
@@ -97,6 +97,7 @@ def _syncNewData(deckDiff):
 
 def addNewDeck():
     
+
     # Get url from user
     # url = "https://docs.google.com/document/d/e/2PACX-1vRXWGu8WvCojrLqMKsf8dTOWstrO1yLy4-8x5nkauRnMyc4iXrwkwY3BThXHc3SlCYqv8ULxup3QiOX/pub"
     url, okPressed = QInputDialog.getText(mw, "Get Remote Deck url","Remote Deck url:", QLineEdit.Normal, "")
@@ -104,7 +105,8 @@ def addNewDeck():
         return
 
     # Get data and build deck
-    ankiBridge = getAnkiPluginConnector()
+    ankiBridge = getAnkiPluginConnector(remoteDefaultDeck)
+
     deck = getRemoteDeck(url)
     deckName = deck.deckName
 
@@ -122,3 +124,38 @@ def addNewDeck():
 
     # Update config on success
     ankiBridge.writeConfig(config)
+
+def removeRemoteDeck():
+
+    # Get current remote decks
+    ankiBridge = getAnkiPluginConnector(remoteDefaultDeck)
+
+    config = ankiBridge.getConfig()
+    remoteDecks = config["remote-decks"]
+
+    # Get all deck name
+    deckNames = []
+    for key in remoteDecks.keys():
+        deckNames.append(remoteDecks[key]["deckName"])
+
+    if len(deckNames) == 0:
+        showInfo("Currently there are no remote decks".format())
+        return
+
+    # Ask user to choose a deck
+    advBasicOptions = deckNames
+    selection, okPressed = QInputDialog.getItem(mw, "Select Deck to Unlink", "Select a deck to Unlink", advBasicOptions, 0, False)
+
+    # Remove desk
+    if okPressed == True:
+
+        newRemoteDeck =remoteDecks.copy()
+        for k in remoteDecks.keys():
+            if selection == remoteDecks[k]["deckName"]:
+                newRemoteDeck.pop(k)
+
+        config["remote-decks"] = newRemoteDeck
+        # Update config on success
+        ankiBridge.writeConfig(config)
+
+    return
