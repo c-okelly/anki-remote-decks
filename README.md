@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/c-okelly/anki-remote-decks.svg?branch=master)](https://travis-ci.org/c-okelly/anki-remote-deck)
 
-Anki Addon to allows users to create decks in Google docs that can then by synced with Anki. The remote deck acts as the source of truth. When a user sync their local deck to a remote cards are added / updated / deleated. When cards are updated (excluding the primary field) thier history is preserved.
+Anki Addon to allow users to create decks in Google docs that can then be synced with Anki. The remote deck acts as the source of truth. When a user syncs their local deck to a remote cards are added / updated / deleted. When cards are updated (excluding the primary field) their history is preserved.
 
 Official Addon => [Anki Remote Decks](https://ankiweb.net/shared/info/911568091)
 
