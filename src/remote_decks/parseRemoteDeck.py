@@ -4,6 +4,8 @@ from bs4 import BeautifulSoup
 import re
 from .libs.org_to_anki.org_parser.parseData import buildNamedDeck
 
+from aqt.utils import showInfo
+
 # Should get the remote deck and return an Anki Deck
 def getRemoteDeck(url):
 
@@ -91,16 +93,17 @@ def _generateOrgListFromHtmlPage(data):
             if (indentation == -1):
                 raise Exception("Could not find the correct indentation")
 
-            if len(listItems) == 1:
-                itemText = listItems[0].text
-            elif len(listItems) > 1:
-                raise Exception("There should only be one list item")
-            
+            itemText = []
+            for i in listItems:
+                itemText.append(i.text)
+
             indentation += 1
             orgStars = (orgStar * indentation)
-            formattedListItem = "{} {}".format(orgStars, itemText)
+            for line in itemText:
+                formattedListItem = "{} {}".format(orgStars, line)
+                orgFormattedFile.append(formattedListItem)
 
-            orgFormattedFile.append(formattedListItem)
+
         else:
             print("Unknown line type: {}".format(item.name))
 
