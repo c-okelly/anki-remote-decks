@@ -4,7 +4,7 @@
 
 Anki Addon to allows users to create decks in Google docs that can then by synced with Anki. The remote deck acts as the source of truth. When a user sync their local deck to a remote cards are added / updated / deleated. When cards are updated (excluding the primary field) thier history is preserved.
 
-Offical Addon => [Anki Remote Decks](https://ankiweb.net/shared/info/911568091)
+Official Addon => [Anki Remote Decks](https://ankiweb.net/shared/info/911568091)
 
 # This Addon is in Alpha so might easily break but the basic api should remain stable going forward.
 
@@ -14,8 +14,8 @@ Offical Addon => [Anki Remote Decks](https://ankiweb.net/shared/info/911568091)
 * Only Basic cards are currently supported
 * More features will come in the future
 
-// TODO
-GIF of the entire process
+GIF of adding a new deck
+![Basic Example using Google Docs](assets/newDeck.gif)
 
 # Create a new deck
 
@@ -39,8 +39,7 @@ There arre two parts:
 
 An example is shown below:
 
-// TODO
-![Google Docs image](http://url/to/img.png)
+![Google Docs image](assets/exampleDoc.png)
 
 This would produce the following:
 
@@ -71,11 +70,17 @@ To add a new remote deck do the following:
 
 New deck will be added to Anki locally
 
-# Sync decks to update with changes
+# Adding new content and syncng decks to update with changes
+
+First step is to go to your original Google doc and make the changes you wish to see.
+Once saved this can take up to 5 minutes to be published to the public version. Keep checking this until you see you changes
 
 To sync all all current remote decks
 
 * Click on Tools => Manage Remote Decks => Remove remote deck
+
+Gif of adding new content and syncing
+![Syncing new content](assets/newQuestion.gif)
 
 # Remove a remote deck
 

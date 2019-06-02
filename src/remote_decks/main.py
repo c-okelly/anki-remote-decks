@@ -49,12 +49,11 @@ def syncDecks():
         # Local deck has no cards
         if localDeck["result"] == []:
             ankiBridge.uploadNewDeck(remoteDeck)
-            showInfo("{}".format("Uploading new deck"))
-            return
-
-        # Diff decks and sync
-        deckDiff = diffAnkiDecks(remoteDeck, localDeck)
-        _syncNewData(deckDiff)
+            showInfo("Deck has no cards. Uploading {}".format(deckName))
+        else:
+            # Diff decks and sync
+            deckDiff = diffAnkiDecks(remoteDeck, localDeck)
+            _syncNewData(deckDiff)
 
 def _syncNewData(deckDiff):
 
