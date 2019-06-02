@@ -4,8 +4,6 @@ from bs4 import BeautifulSoup
 import re
 from .libs.org_to_anki.org_parser.parseData import buildNamedDeck
 
-from aqt.utils import showInfo
-
 # Should get the remote deck and return an Anki Deck
 def getRemoteDeck(url):
 
