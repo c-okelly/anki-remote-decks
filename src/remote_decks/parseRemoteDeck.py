@@ -49,7 +49,7 @@ def _parseHtmlPageToAnkiDeck(data):
 def _generateOrgListFromHtmlPage(data):
 
     orgStar = "*"
-    imageTemplate = " [{}]"
+    imageTemplate = " [image={}]"
     soup = BeautifulSoup(data, 'html.parser')
     header = soup.find("div", {"id":"header"})
     deckName = header.text
@@ -63,18 +63,6 @@ def _generateOrgListFromHtmlPage(data):
             lineText = item.text
             if len(lineText) > 0:
                 orgFormattedFile.append(lineText)
-
-            # Check if line contains an image
-            # TODO this has been disabled for MVP
-            # images = item.find_all("img")
-            # if len(images) == 1:
-            #     # print("found an image")
-            #     imageText = imageTemplate.format(images[0]["src"])
-            #     orgFormattedFile.append(imageText)
-
-            # TODO support multiple images after MVP and test
-            # elif len(images) > 1:
-            #     raise Exception("Only one image per a line")
 
         elif item.name == "ul":
             # print("ul")
@@ -93,7 +81,14 @@ def _generateOrgListFromHtmlPage(data):
 
             itemText = []
             for i in listItems:
-                itemText.append(i.text)
+                if (len(i.text.strip()) > 0):
+                    itemText.append(i.text)
+
+                # Check for single image and take first
+                images = item.find_all("img")
+                if len(images) >= 1:
+                    imageText = imageTemplate.format(images[0]["src"])
+                    itemText.append(imageText)
 
             indentation += 1
             orgStars = (orgStar * indentation)

@@ -45,6 +45,16 @@ def testParseGoogleDocToOrgFile():
     assert(orgPage == expectedData)
 
 
+
+def testParseImagesInGoogleDocs():
+    testFile = "test/testData/image_data.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    expectedData = ['* Picture example!', '**  [image=https://lh3.googleusercontent.com/gdEMfGtrSRTvbTiXwysYJ_5XxqieWt0Z9vtFw0jQxOlbjo43_PJYa4kCusZjmkbe_euwGa4KAWEo2xJvEzHkwIpVN3H-XvCxVXCpQNOcH9_tERcVodYf75t18hYlargfKgYtHYvM]']
+    orgPage = _generateOrgListFromHtmlPage(testFileData)["data"]
+    assert(orgPage == expectedData)
+
 def testParseGoogleDocToAnkiDeck():
 
     testFile = "test/testData/remote_deck_test.html"
