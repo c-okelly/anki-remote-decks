@@ -52,7 +52,7 @@ def diffAnkiDecks(orgAnkiDeck, ankiBaseDeck):
     # Find question in Anki that have been deleted from remote source
     for note in storedNotes:
         storedNote = storedNotes.get(note)
-        keyField = _determineKeyField(builtQuestion)
+        keyField = _determineKeyField(storedNote)
         key = storedNote.get("fields").get(keyField)["value"]
 
         storedQuestionFound = False
