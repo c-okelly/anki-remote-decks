@@ -43,7 +43,7 @@ An example is shown below:
 
 This would produce the following:
 
-  * A deck named test_deck
+  * A deck named ```test_deck```
   * Two basic notes with the assocaited question and answers
 
 ## Sharing the Google docs
@@ -70,7 +70,7 @@ To add a new remote deck do the following:
 
 New deck will be added to Anki locally
 
-# Adding new content and syncng decks to update with changes
+# Adding new content and syncing decks to update with changes
 
 First step is to go to your original Google doc and make the changes you wish to see.
 Once saved this can take up to 5 minutes to be published to the public version. Keep checking this until you see you changes
