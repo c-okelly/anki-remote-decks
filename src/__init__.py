@@ -16,18 +16,45 @@ except:
     mw = None
     pass
     
+errorTemplate = """
+Hey there! It seems an error has occurred while running.
+
+The error was {}.
+
+If you would like me to fix it please report it here: https://github.com/c-okelly/anki-remote-decks/issues
+
+Please be sure to provide as much information as possible. Specifically the file the caused the error.
+"""
+
 def addDeck():
 
-    addNewDeck()
+    try:
+        addNewDeck()
+    # General exception
+    except Exception as e:
+        errorMessage = str(e)
+        # trace = traceback.format_exc()
+        showInfo(errorTemplate.format(errorMessage))
 
 def syncDecks():
 
-    # showInfo("Sync")
-    sDecks()
+    try:
+        sDecks()
+    # General exception
+    except Exception as e:
+        errorMessage = str(e)
+        # trace = traceback.format_exc()
+        showInfo(errorTemplate.format(errorMessage))
 
 def removeRemote():
 
-    rDecks()
+    try:
+        rDecks()
+    # General exception
+    except Exception as e:
+        errorMessage = str(e)
+        # trace = traceback.format_exc()
+        showInfo(errorTemplate.format(errorMessage))
 
 if (QAction != None and mw != None):
     remoteDecksSubMenu = QMenu("Manage remote deck", mw)
