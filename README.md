@@ -6,8 +6,6 @@ Anki Addon to allow users to create decks in Google docs that can then be synced
 
 Official Addon => [Anki Remote Decks](https://ankiweb.net/shared/info/911568091)
 
-# This Addon is in Alpha so might easily break but the basic api should remain stable going forward.
-
 # Overview
 
 * This addon is still in beta and so only currenlty supports very basic functionality
