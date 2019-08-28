@@ -73,5 +73,10 @@ def diffAnkiDecks(orgAnkiDeck, ankiBaseDeck):
 
 def _determineKeyField(jsonDeck):
 
-    # TODO in future the Front my not be the key field for a note
-    return "Front"
+    # TODO should use the Anki database to determine key field
+    if jsonDeck.get("modelName") == "Basic":
+        return "Front"
+    elif jsonDeck.get("modelName") == "Cloze":
+        return "Text"
+    else:
+        return "Front"

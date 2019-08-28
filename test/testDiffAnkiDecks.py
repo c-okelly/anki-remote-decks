@@ -2,6 +2,7 @@
 from src.remote_decks.libs.org_to_anki.org_parser.parseData import parse
 from src.remote_decks.libs.org_to_anki.ankiClasses.AnkiQuestion import AnkiQuestion
 from src.remote_decks.diffAnkiDecks import diffAnkiDecks
+from src.remote_decks.diffAnkiDecks import _determineKeyField
 
 import json
 
@@ -74,6 +75,18 @@ def testAllThreeUseCases():
     assert(len(deckDiffs["questionsUpdated"]) == 1)
     assert(len(deckDiffs["removedQuestions"]) == 1)
 
+def test_determineKeyField_basicCard():
+
+    question = {'noteId': 1566994902980, 'tags': [], 'fields': {'Front': {'value': 'Question 1', 'order': 0}, 'Back': {'value': "\nAnswer 1\n", 'order': 1}}, 'modelName': 'Basic', 'cards': [1566994902981]}
+    keyField = _determineKeyField(question)
+    assert(keyField == "Front")
+
+def test_determineKeyField_ClozeCard():
+
+    question =  {"noteId": 1566994902986, "tags": [], "fields": {"Text": {"value": "Close {{c1::Question}}?", "order": 0}, "Extra": {"value": "", "order": 1}}, "modelName": "Cloze", "cards": [1566994902987]}
+
+    keyField = _determineKeyField(question)
+    assert(keyField == "Text")
 
 def _getAnkiData():
 
