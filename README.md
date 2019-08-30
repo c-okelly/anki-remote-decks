@@ -75,7 +75,7 @@ Once saved this can take up to 5 minutes to be published to the public version. 
 
 To sync all all current remote decks
 
-* Click on Tools => Manage Remote Decks => Remove remote deck
+* Click on Tools => Manage Remote Decks => Sync remote deck
 
 Gif of adding new content and syncing
 ![Syncing new content](assets/newQuestion.gif)
