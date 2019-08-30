@@ -85,7 +85,7 @@ def _generateOrgListFromHtmlPage(data):
                     itemText.append(i.text)
 
                 # Check for single image and take first
-                images = item.find_all("img")
+                images = i.find_all("img")
                 if len(images) >= 1:
                     imageText = imageTemplate.format(images[0]["src"])
                     itemText.append(imageText)

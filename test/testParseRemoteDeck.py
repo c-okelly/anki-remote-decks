@@ -78,3 +78,26 @@ def testConvertingUrlIntoAnkiDeck():
     assert(deck.getQuestions()[0].getQuestions() == ["Level 1"])
     assert(deck.getQuestions()[0].getAnswers() == ['Level 2', ['Level 3', ['Level 4']]])
     assert(deck.getQuestions()[1].getQuestions() == ["Level 1.1"])
+
+
+def testImageParsing_bugWhereImageIsInsertedTwice():
+
+    testFile = "test/testData/double.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    orgData = _generateOrgListFromHtmlPage(testFileData)
+
+    assert(orgData.get("data") ==  ['* Question', '** <b> Text 1 </b>', '**  [image=image-1]', '* Question 2', '** Text 2', '**  [image=image-2]', '**  [image=image-3]'])
+
+def testImageParsing_multipleImagesPerAQuestion():
+
+    testFile = "test/testData/double.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    orgData = _generateOrgListFromHtmlPage(testFileData)
+
+    assert(orgData.get("data")[-2] == '**  [image=image-2]')
+    assert(orgData.get("data")[-1] == '**  [image=image-3]')
+
