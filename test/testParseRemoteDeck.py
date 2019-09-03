@@ -101,3 +101,15 @@ def testImageParsing_multipleImagesPerAQuestion():
     assert(orgData.get("data")[-2] == '**  [image=image-2]')
     assert(orgData.get("data")[-1] == '**  [image=image-3]')
 
+
+def testParseCssInfo():
+
+
+    testFile = "test/testData/formatting.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    orgData = _generateOrgListFromHtmlPage(testFileData)
+
+    assert(False)
+

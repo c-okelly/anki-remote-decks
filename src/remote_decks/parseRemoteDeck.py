@@ -55,6 +55,30 @@ def _generateOrgListFromHtmlPage(data):
     deckName = header.text
     contents = soup.find("div", {"id":"contents"})
 
+    ## Try and get CSS
+
+    cssData = soup.find_all("style")
+    if len(cssData) > 0:
+        cssData = soup.find_all("style")[1]
+
+        # Get .c sections
+        cSectionRegexPattern = "\.c\d{1,2}\w\{[^\}]+}"
+        cssSections = re.findall(cSectionRegexPattern, cssData.text)
+
+        # for each c section extract critical data
+        for section in cssSections:
+            print(section)
+            color = re.find()
+            fontStyle = None
+            fontWeight = None
+            textDecoration = None
+
+
+
+
+
+
+
     orgFormattedFile = []
     for item in contents:
         # print(item)
@@ -98,7 +122,8 @@ def _generateOrgListFromHtmlPage(data):
 
 
         else:
-            print("Unknown line type: {}".format(item.name))
+            pass
+            # print("Unknown line type: {}".format(item.name))
 
     return {"deckName":deckName, "data":orgFormattedFile}
 
