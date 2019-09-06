@@ -158,3 +158,8 @@ def removeRemoteDeck():
         ankiBridge.writeConfig(config)
 
     return
+
+
+def exportCards(deckName):
+
+    pass
