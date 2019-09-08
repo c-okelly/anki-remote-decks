@@ -10,6 +10,7 @@ Official Addon => [Anki Remote Decks](https://ankiweb.net/shared/info/911568091)
 
 * This addon is still in beta and so only currenlty supports very basic functionality
 * Only Basic cards are currently supported
+* Support for text formatting
 * More features will come in the future
 
 GIF of adding a new deck
@@ -94,9 +95,18 @@ Removed decks are only unlinked to the remote one. The local copy is not deleate
 * If the question line (primary field) is changed this is regarded as an delate and add new note
   * History is lost for the note
 
+# Formatting support
+
+Currently the following formatting is supported:
+
+* Bold
+* Underlined
+* Italics
+* Colors
+
 # Contributing
 
-The repo is not really setup up currenty for contributing. 
+The repo is not really setup up currently for contributing. 
 
 In order to package the repository run the following scripts. This will generate a zip with the required files for an Anki Addon
 

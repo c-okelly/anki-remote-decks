@@ -46,6 +46,45 @@ def _parseHtmlPageToAnkiDeck(data):
 
     return deck
 
+
+def _getCssStyles(cssData):
+
+    # Google docs used the following class for lists $c1
+    cSectionRegexPattern = "\.c\d{1,2}\{[^\}]+}"
+    cssSections = re.findall(cSectionRegexPattern, cssData.text)
+
+    cssStyles = {}
+    # for each c section extract critical data
+    regexValuePattern = ":[^;^}\s]+[;}]"
+    for section in cssSections:
+        name = re.findall("c[\d]+", section)[0]
+        color = re.findall("{}{}".format("color", regexValuePattern), section)
+        fontStyle = re.findall("{}{}".format("font-style", regexValuePattern), section)
+        fontWeight = re.findall("{}{}".format("font-weight", regexValuePattern), section)
+        textDecoration = re.findall("{}{}".format("text-decoration", regexValuePattern), section)
+
+        # Ignore default values
+        if (len(color) >0 and "color:#000000" in color[0]):
+            color = []
+        if (len(fontWeight) >0 and "font-weight:400" in fontWeight[0]):
+            fontWeight = []
+        if (len(fontStyle) >0 and "font-style:normal" in fontStyle[0]):
+            fontStyle = []
+        if (len(textDecoration) >0 and "text-decoration:none" in textDecoration[0]):
+            textDecoration = []
+
+        d = [color, fontStyle, fontWeight, textDecoration]
+
+        styleValues = []
+        for i in d:
+            if len(i) > 0:
+                cleanedStyle = i[0][:-1]
+                styleValues.append(cleanedStyle)
+        cssStyles[name] = styleValues
+
+    return cssStyles
+
+
 def _generateOrgListFromHtmlPage(data):
 
     orgStar = "*"
@@ -54,6 +93,15 @@ def _generateOrgListFromHtmlPage(data):
     header = soup.find("div", {"id":"header"})
     deckName = header.text
     contents = soup.find("div", {"id":"contents"})
+
+    ## Try and get CSS
+
+    cssData = soup.find_all("style")
+    cssStyles = {}
+    for css in cssData:
+        cssData = soup.find_all("style")[1]
+        styleSection = _getCssStyles(cssData)
+        cssStyles.update(styleSection)
 
     orgFormattedFile = []
     for item in contents:
@@ -81,14 +129,19 @@ def _generateOrgListFromHtmlPage(data):
 
             itemText = []
             for i in listItems:
-                if (len(i.text.strip()) > 0):
-                    itemText.append(i.text)
+                # Get all spans
+                textSpans = i.find_all("span")
+                lineOfText = ""
+                for span in textSpans:
+                    lineOfText += _extractSpanWithStyles(span, cssStyles)
 
-                # Check for single image and take first
+                # Check for images and take first
                 images = i.find_all("img")
                 if len(images) >= 1:
                     imageText = imageTemplate.format(images[0]["src"])
-                    itemText.append(imageText)
+                    lineOfText += imageText
+
+                itemText.append(lineOfText)
 
             indentation += 1
             orgStars = (orgStar * indentation)
@@ -98,9 +151,34 @@ def _generateOrgListFromHtmlPage(data):
 
 
         else:
-            print("Unknown line type: {}".format(item.name))
+            pass
+            # print("Unknown line type: {}".format(item.name))
 
     return {"deckName":deckName, "data":orgFormattedFile}
+
+def _extractSpanWithStyles(soupSpan, cssStyles):
+
+    text = soupSpan.text
+    classes = soupSpan.attrs.get("class")
+
+    if classes == None:
+        return text
+
+    relevantStyles = []
+    for clazz in classes:
+        if cssStyles.get(clazz) != None:
+            for style in cssStyles.get(clazz):
+                relevantStyles.append(style)
+
+
+    if len(relevantStyles) > 0:
+        styleAttributes = ""
+        for i in relevantStyles:
+            styleAttributes += i + ";"
+        styledText = '<span style="{}">{}</span>'.format(styleAttributes, text)
+        return styledText
+    else:
+        return text
 
 def _download(url):
 
