@@ -9,6 +9,7 @@ from src.remote_decks.parseRemoteDeck import _generateOrgListFromHtmlPage
 from src.remote_decks.parseRemoteDeck import _parseHtmlPageToAnkiDeck
 from src.remote_decks.parseRemoteDeck import _determinePageType
 from src.remote_decks.parseRemoteDeck import _extractSpanWithStyles
+from src.remote_decks.parseRemoteDeck import _getCssStyles
 
 def testDetermineFileType():
 
@@ -113,9 +114,9 @@ def testParseCssInfo():
         testFileData = f.read()
 
     orgData = _generateOrgListFromHtmlPage(testFileData)
-    print(orgData.get("data")[-9:])
 
-    assert(orgData.get("data")[-9:] == ['* Question with bold', '** one <span style="font-weight:700;">Bold </span>one', '** <span style="font-weight:700;">All bold</span>', '** One <span style="text-decoration:underline;">Underlined </span>one', '** One <span style="font-weight:700;font-style:italic;">Italics </span>one', '** One <span style="color:#ff0000;">Red </span>one', '** One <span style="color:#0000ff;">Blue </span>one', '** One <span style="color:#00ff00;">Green </span>one', '** One <span style="color:#ff00ff;">Pink </span>one'])
+    # TODO this is clearly nonsense
+    assert(orgData.get("data")[-11:-2] == ['* Question with bold', '** one <span style="font-weight:700;">Bold </span>one', '** <span style="font-weight:700;">All bold</span>', '** One <span style="text-decoration:underline;">Underlined </span>one', '** One <span style="font-weight:700;font-style:italic;">Italics </span>one', '** One <span style="color:#ff0000;">Red </span>one', '** One <span style="color:#0000ff;">Blue </span>one', '** One <span style="color:#00ff00;">Green </span>one', '** One <span style="color:#ff00ff;">Pink </span>one'])
 
 def test_extractSpanWithStyles():
 
@@ -130,15 +131,45 @@ def test_extractSpanWithStyles():
 
 def testCssRegexParsing():
 
-    css = '.c11{-webkit-text-decoration-skip:none;color:#000000;font-weight:400;text-decoration:underline;vertical-align:baseline;text-decoration-skip-ink:none;font-size:11pt;font-family:"Arial";font-style:normal}'
+    class MockSoupObjectForCss:
+        def __init__(self):
+            text = None
+
+    mockCss = MockSoupObjectForCss()
+    mockCss.text = '.c11{-webkit-text-decoration-skip:none;color:#001000;font-weight:700;text-decoration:underline;vertical-align:baseline;text-decoration-skip-ink:none;font-size:11pt;font-family:"Arial";font-style:normal}'
     
-    #TODO finish
+    cssStyles = _getCssStyles(mockCss)
+
+    assert(cssStyles.get("c11") != None)
+    assert(cssStyles.get("c11") == ['color:#001000', 'font-weight:700', 'text-decoration:underline'])
 
 def testEmptyBulletPoint():
 
 
-    #TODO => this will break the cloze for all usecase otherwise
-    assert(True)
+    #this will break the cloze otherwise
+    testFile = "test/testData/formatting.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
 
+    orgData = _generateOrgListFromHtmlPage(testFileData)
+    # print(orgData.get("data")[-2:])
 
-# TODO write test for C4 and C14 one vs two digites bug
+    assert(orgData.get("data")[-2:] == ['* Empty Question', '** '])
+
+def testCssRegexParsing_getBothTypesOf_C_css():
+
+    # Ensure both cXX and cX fromating is matched. Where is is 0-9
+    class MockSoupObjectForCss:
+        def __init__(self):
+            text = None
+
+    mockCss = MockSoupObjectForCss()
+    mockCss.text = '.c11{color:#001000;}'
+    cssStyles = _getCssStyles(mockCss)
+
+    assert(cssStyles.get("c11") != None)
+
+    mockCss = MockSoupObjectForCss()
+    mockCss.text = '.c1{color:#001000;}'
+    cssStyles = _getCssStyles(mockCss)
+    assert(cssStyles.get("c1") != None)

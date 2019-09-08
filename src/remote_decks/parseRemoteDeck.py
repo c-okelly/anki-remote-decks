@@ -56,7 +56,6 @@ def _getCssStyles(cssData):
     cssStyles = {}
     # for each c section extract critical data
     regexValuePattern = ":[^;^}\s]+[;}]"
-    # TODO ignore when color is black or fontWeight is 400 (default values)
     for section in cssSections:
         name = re.findall("c[\d]+", section)[0]
         color = re.findall("{}{}".format("color", regexValuePattern), section)
