@@ -34,7 +34,7 @@ def testGetDeckName():
 def testDownloadWebPage():
     url = "https://www.example.com"
     data = _download(url)
-    assert(data[0:15] == b'<!doctype html>')
+    assert(data[0:15] == '<!doctype html>')
 
 
 def testParseGoogleDocToOrgFile():
@@ -173,3 +173,11 @@ def testCssRegexParsing_getBothTypesOf_C_css():
     mockCss.text = '.c1{color:#001000;}'
     cssStyles = _getCssStyles(mockCss)
     assert(cssStyles.get("c1") != None)
+
+def testUnicodeIsRespected():
+    testFile = "test/testData/imageInQuestionBug.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    orgData = _generateOrgListFromHtmlPage(testFileData)
+    assert(orgData.get("data")[1].strip() == "** Réponse 1")
