@@ -143,6 +143,21 @@ def testCssRegexParsing():
     assert(cssStyles.get("c11") != None)
     assert(cssStyles.get("c11") == ['color:#001000', 'font-weight:700', 'text-decoration:underline'])
 
+def testCssRegexParsing_ignoresBackGroundColor():
+
+    class MockSoupObjectForCss:
+        def __init__(self):
+            text = None
+
+    mockCss = MockSoupObjectForCss()
+    mockCss.text = '.c11{-webkit-text-decoration-skip:none;color:#001000;font-weight:700;text-decoration:underline;vertical-align:baseline;text-decoration-skip-ink:none;font-size:11pt;font-family:"Arial";font-style:normal;background-color:#fffffff;}'
+    
+    cssStyles = _getCssStyles(mockCss)
+
+    assert(cssStyles.get("c11") != None)
+    assert(cssStyles.get("c11") == ['color:#001000', 'font-weight:700', 'text-decoration:underline'])
+
+
 def testEmptyBulletPoint():
 
 

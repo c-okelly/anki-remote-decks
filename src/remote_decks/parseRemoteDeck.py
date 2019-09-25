@@ -55,7 +55,7 @@ def _getCssStyles(cssData):
 
     cssStyles = {}
     # for each c section extract critical data
-    regexValuePattern = ":[^;^}\s]+[;}]"
+    regexValuePattern = "[;{]:[^;^}\s]+[;}]"
     for section in cssSections:
         name = re.findall("c[\d]+", section)[0]
         color = re.findall("{}{}".format("color", regexValuePattern), section)
@@ -78,7 +78,7 @@ def _getCssStyles(cssData):
         styleValues = []
         for i in d:
             if len(i) > 0:
-                cleanedStyle = i[0][:-1]
+                cleanedStyle = i[0][1:-1]
                 styleValues.append(cleanedStyle)
         cssStyles[name] = styleValues
 
