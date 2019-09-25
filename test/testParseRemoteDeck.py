@@ -155,6 +155,7 @@ def testCssRegexParsing_ignoresBackGroundColor():
     cssStyles = _getCssStyles(mockCss)
 
     assert(cssStyles.get("c11") != None)
+    print(cssStyles.get("c11"))
     assert(cssStyles.get("c11") == ['color:#001000', 'font-weight:700', 'text-decoration:underline'])
 
 

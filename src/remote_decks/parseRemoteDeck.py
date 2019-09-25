@@ -55,13 +55,14 @@ def _getCssStyles(cssData):
 
     cssStyles = {}
     # for each c section extract critical data
-    regexValuePattern = "[;{]:[^;^}\s]+[;}]"
+    regexValuePattern = ":[^;^}\s]+[;}]"
+    startSectionRegex = "[;{]"
     for section in cssSections:
         name = re.findall("c[\d]+", section)[0]
-        color = re.findall("{}{}".format("color", regexValuePattern), section)
-        fontStyle = re.findall("{}{}".format("font-style", regexValuePattern), section)
-        fontWeight = re.findall("{}{}".format("font-weight", regexValuePattern), section)
-        textDecoration = re.findall("{}{}".format("text-decoration", regexValuePattern), section)
+        color = re.findall("{}{}{}".format(startSectionRegex, "color", regexValuePattern), section)
+        fontStyle = re.findall("{}{}{}".format(startSectionRegex, "font-style", regexValuePattern), section)
+        fontWeight = re.findall("{}{}{}".format(startSectionRegex, "font-weight", regexValuePattern), section)
+        textDecoration = re.findall("{}{}{}".format(startSectionRegex, "text-decoration", regexValuePattern), section)
 
         # Ignore default values
         if (len(color) >0 and "color:#000000" in color[0]):
