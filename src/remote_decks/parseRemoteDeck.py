@@ -188,7 +188,9 @@ def _download(url):
     else:
         raise Exception("Failed to get url: {}".format(response.status_code))
 
-    return data.decode("utf-8")
+    data = data.decode("utf-8")
+    data = data.replace("\xa0","")
+    return data
 
 if __name__ == "__main__":
     pass
