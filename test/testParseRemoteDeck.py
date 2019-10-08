@@ -31,10 +31,10 @@ def testGetDeckName():
 
     assert(deck.deckName == "remote_deck_test")
 
-def testDownloadWebPage():
-    url = "https://www.example.com"
-    data = _download(url)
-    assert(data[0:15] == '<!doctype html>')
+# def testDownloadWebPage():
+#     url = "https://www.example.com"
+#     data = _download(url)
+#     assert(data[0:15] == '<!doctype html>')
 
 
 def testParseGoogleDocToOrgFile():
@@ -73,15 +73,15 @@ def testParseGoogleDocToAnkiDeck():
     assert(deck.getQuestions()[1].getQuestions() == ["Level 1.1"])
 
 
-def testConvertingUrlIntoAnkiDeck():
+# def testConvertingUrlIntoAnkiDeck():
 
-    url = "https://docs.google.com/document/d/e/2PACX-1vRmD3Um10Qvfb2JU0jtPOPXde2RCKPmh3mIMD3aXOZ7T4TfU6CWyPQAHNdrCB8Bo6kuLFplJAOQcbL5/pub"
-    deck = getRemoteDeck(url)
+#     url = "https://docs.google.com/document/d/e/2PACX-1vRmD3Um10Qvfb2JU0jtPOPXde2RCKPmh3mIMD3aXOZ7T4TfU6CWyPQAHNdrCB8Bo6kuLFplJAOQcbL5/pub"
+#     deck = getRemoteDeck(url)
 
-    assert(len(deck.getQuestions()) == 2)
-    assert(deck.getQuestions()[0].getQuestions() == ["Level 1"])
-    assert(deck.getQuestions()[0].getAnswers() == ['Level 2', ['Level 3', ['Level 4']]])
-    assert(deck.getQuestions()[1].getQuestions() == ["Level 1.1"])
+#     assert(len(deck.getQuestions()) == 2)
+#     assert(deck.getQuestions()[0].getQuestions() == ["Level 1"])
+#     assert(deck.getQuestions()[0].getAnswers() == ['Level 2', ['Level 3', ['Level 4']]])
+#     assert(deck.getQuestions()[1].getQuestions() == ["Level 1.1"])
 
 
 def testImageParsing_bugWhereImageIsInsertedTwice():
@@ -222,3 +222,15 @@ def testSquareBracketsThrowingError():
     print(orgData.getQuestions()[0].getAnswers()[0])
     expectedText = '<span style="font-weight:700;"> Disminuye </span> frecuencia cardiaca'
     assert(orgData.getQuestions()[0].getAnswers()[0] == expectedText)
+
+def testParseWithTableOfContentsAndSections():
+
+    testFile = "test/testData/tableOfContents.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    expectedData = ['# Section 1', '* subDeck 1', '** Question subDeck a', '*** Answer 1 updated!', '# Section 2', '* subDeck 2', '** Question of subDeck 2', '*** Answer 1 updated!']
+    orgPage = _generateOrgListFromHtmlPage(testFileData)["data"]
+
+    assert(orgPage == expectedData)
+    assert(False)
