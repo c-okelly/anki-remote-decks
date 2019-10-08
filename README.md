@@ -127,7 +127,8 @@ If you have an issue please file a github issues! Thanks
 
 # Future development
 
-No long term road path currently
-Image support would be nice though!
+Future development will be tracked under issues as feature requests
 
+# Contributors
 
+Github user fneurohr22
