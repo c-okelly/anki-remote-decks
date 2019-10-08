@@ -10,6 +10,8 @@ release_*.zip
 src/remote_decks/libs/*
 !src/remote_decks/libs/__init__.py
 
+# osx index files
+.DS_Store
 
 # C extensions
 *.so
