@@ -176,7 +176,9 @@ def _extractSpanWithStyles(soupSpan, cssStyles):
         styleAttributes = ""
         for i in relevantStyles:
             styleAttributes += i + ";"
-        styledText = '<span style="{}">{}</span>'.format(styleAttributes, text)
+        # Added whitespace around the text. The whitespace is getting stripped somewhere
+        text = text.strip()
+        styledText = '<span style="{}"> {} </span>'.format(styleAttributes, text)
         return styledText
     else:
         return text

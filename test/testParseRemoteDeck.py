@@ -116,17 +116,20 @@ def testParseCssInfo():
     orgData = _generateOrgListFromHtmlPage(testFileData)
 
     # TODO this is clearly nonsense
-    assert(orgData.get("data")[-11:-2] == ['* Question with bold', '** one <span style="font-weight:700;">Bold </span>one', '** <span style="font-weight:700;">All bold</span>', '** One <span style="text-decoration:underline;">Underlined </span>one', '** One <span style="font-weight:700;font-style:italic;">Italics </span>one', '** One <span style="color:#ff0000;">Red </span>one', '** One <span style="color:#0000ff;">Blue </span>one', '** One <span style="color:#00ff00;">Green </span>one', '** One <span style="color:#ff00ff;">Pink </span>one'])
+    expectedText = ['* Question with bold', '** one <span style="font-weight:700;"> Bold </span>one', '** <span style="font-weight:700;"> All bold </span>', '** One <span style="text-decoration:underline;"> Underlined </span>one', '** One <span style="font-weight:700;font-style:italic;"> Italics </span>one', '** One <span style="color:#ff0000;"> Red </span>one', '** One <span style="color:#0000ff;"> Blue </span>one', '** One <span style="color:#00ff00;"> Green </span>one', '** One <span style="color:#ff00ff;"> Pink </span>one']
+    # print(orgData.get("data")[-11:-2])
+    assert(orgData.get("data")[-11:-2] == expectedText) 
 
 def test_extractSpanWithStyles():
 
     listItemText = '<li class="c0"><span>O</span><span>ne </span><span class="c7">Pink </span><span>one</span></li>'
     soupSpan = BeautifulSoup(listItemText, 'html.parser').find_all("span")[2]
-    cssStyle = {"c7":['color:#ff00ff;', 'font-weight:700', 'text-decoration:underline']}
+    cssStyle = {"c7":['color:#ff00ff', 'font-weight:700', 'text-decoration:underline']}
 
     text = _extractSpanWithStyles(soupSpan, cssStyle)
 
-    assert(text == '<span style="color:#ff00ff;;font-weight:700;text-decoration:underline;">Pink </span>')
+    expectedText = '<span style="color:#ff00ff;font-weight:700;text-decoration:underline;"> Pink </span>'
+    assert(text == expectedText)
 
 
 def testCssRegexParsing():
@@ -160,7 +163,6 @@ def testCssRegexParsing_ignoresBackGroundColor():
 
 
 def testEmptyBulletPoint():
-
 
     #this will break the cloze otherwise
     testFile = "test/testData/formatting.html"
@@ -197,3 +199,25 @@ def testUnicodeIsRespected():
 
     orgData = _generateOrgListFromHtmlPage(testFileData)
     assert(orgData.get("data")[1].strip() == "** Réponse 1")
+
+def testSquareBracketsThrowingError():
+
+    #this will break the cloze otherwise
+    testFile = "test/testData/brackets.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    deck = _parseHtmlPageToAnkiDeck(testFileData)
+    # print(deck.getQuestions()[0].get)
+
+def testSquareBracketsThrowingError():
+
+    #this will break the cloze otherwise
+    testFile = "test/testData/spacesInFormatting.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    orgData = _parseHtmlPageToAnkiDeck(testFileData)
+    print(orgData.getQuestions()[0].getAnswers()[0])
+    expectedText = '<span style="font-weight:700;"> Disminuye </span> frecuencia cardiaca'
+    assert(orgData.getQuestions()[0].getAnswers()[0] == expectedText)
