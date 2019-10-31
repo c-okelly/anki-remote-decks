@@ -2,13 +2,13 @@
 
 [![Build Status](https://travis-ci.org/c-okelly/anki-remote-decks.svg?branch=master)](https://travis-ci.org/c-okelly/anki-remote-deck)
 
-Anki Addon to allow users to create decks in Google docs that can then be synced with Anki. The remote deck acts as the source of truth. When a user syncs their local deck to a remote cards are added / updated / deleted. When cards are updated (excluding the primary field) their history is preserved.
+Anki add-on to allow users to create decks in Google Docs that can then be synced with Anki. The remote deck acts as the source of truth. When a user syncs, cards are added / updated / deleted in the local deck. When cards are updated (excluding the primary field) their history is preserved.
 
-Official Addon => [Anki Remote Decks](https://ankiweb.net/shared/info/911568091)
+Official Add-on => [Anki Remote Decks](https://ankiweb.net/shared/info/911568091)
 
 # Overview
 
-* This addon is still in beta and so only currenlty supports very basic functionality
+* This add-on is still in beta and so only supports very basic functionality
 * Only Basic cards are currently supported
 * Support for text formatting
 * More features will come in the future
@@ -18,9 +18,9 @@ GIF of adding a new deck
 
 # Create a new deck
 
-There arre two parts:
+There are two steps:
 * Creating a Google Doc
-* Sharing the Google Doc
+* Publishing the Google Doc
 
 ## Example remote deck
 
@@ -32,7 +32,7 @@ There arre two parts:
 ## Creating Google doc
 
 * Create a new Google Docs page
-* Write you Question and Answers in the following format using bullet points
+* Write your Questions and Answers in the following format using bullet points
 
 ```markdown
 # Some comment you don't want included
@@ -49,17 +49,17 @@ An example is shown below:
 This would produce the following:
 
   * A deck named ```test_deck```
-  * Two basic notes with the assocaited question and answers
+  * Two basic notes with the associated questions and answers
 
-## Sharing the Google docs
+## Publishing the Google docs
 
-The Google drive page must be published in order to be publically accessilbe. This is done as follows.
+The Google Docs page must be published in order to be publically accessible.
 
 * File > Publish to Web
 * Click on the publish button
 
 
-* The link provided is your key for syncing new decks\
+* The link provided is your key for syncing new decks.
 
 An example published deck [Example Google docs deck](https://docs.google.com/document/d/e/2PACX-1vRXWGu8WvCojrLqMKsf8dTOWstrO1yLy4-8x5nkauRnMyc4iXrwkwY3BThXHc3SlCYqv8ULxup3QiOX/pub)
 
@@ -67,38 +67,38 @@ An example published deck [Example Google docs deck](https://docs.google.com/doc
 # Adding the deck to Anki
 
 
-To add a new remote deck do the following:
+To add a new remote deck:
 
 * Click on Tools => Manage Remote Decks => Add new remote deck
-* Add the url of your remote Deck
-* Click ok
+* Add the URL of your remote deck
+* Click OK
 
-New deck will be added to Anki locally
+The new deck will be added to Anki.
 
 # Adding new content and syncing decks to update with changes
 
-First step is to go to your original Google doc and make the changes you wish to see.
-Once saved this can take up to 5 minutes to be published to the public version. Keep checking this until you see you changes
+Go to the original Google doc and make the changes you wish to see.
+It can take up to 5 minutes for changes to be published to the public version. Keep checking until you see your changes.
 
-To sync all all current remote decks
+To sync all current remote decks:
 
 * Click on Tools => Manage Remote Decks => Sync remote deck
 
-Gif of adding new content and syncing
+GIF of adding new content and syncing
 ![Syncing new content](assets/newQuestion.gif)
 
 # Remove a remote deck
 
-Removed decks are only unlinked to the remote one. The local copy is not deleated.
+Removed decks are only unlinked from the remote doc. The local copy is not deleted.
 
-* Click on Tools => Manage Remote Decks => Add new remote deck
+* Click on Tools => Manage Remote Decks => Remove remote deck
 
-# How does the addon manage changes with note history?
+# How does the add-on manage changes with note history?
 
 * New notes are added without any history
-* Notes removed from the Google docs are removed from the local deck
-* If the answer section of a note changes this is update and the history is preserved
-* If the question line (primary field) is changed this is regarded as an delate and add new note
+* Notes removed from the Google doc are removed from the local deck
+* If the answer section changes, the note is updated and history is preserved
+* If the question line (primary field) changes, the old note is deleted and a new note is added.
   * History is lost for the note
 
 # Formatting support
@@ -114,7 +114,7 @@ Currently the following formatting is supported:
 
 The repo is not really setup up currently for contributing. 
 
-In order to package the repository run the following scripts. This will generate a zip with the required files for an Anki Addon
+In order to package the repository run the following scripts. This will generate a zip with the required files for an Anki Add-on
 
 ```
 ./installOrgToAnki.sh
@@ -123,7 +123,7 @@ In order to package the repository run the following scripts. This will generate
 
 # Issues
 
-If you have an issue please file a github issues! Thanks
+If you have an issue please file a github issue! Thanks
 
 # Future development
 
