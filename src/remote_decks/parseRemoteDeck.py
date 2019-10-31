@@ -9,6 +9,8 @@ def getRemoteDeck(url):
 
     # Get remote page
     # TODO Validate url before getting data
+    if url.startswith('https://docs.google.com/') and not url.endswith('pub'):
+        raise Exception("Use the Publish link, not the Sharing link")
     pageType = _determinePageType(url)
     deck = None
     if pageType == "html":
