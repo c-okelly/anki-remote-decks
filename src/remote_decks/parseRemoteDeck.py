@@ -91,7 +91,7 @@ def _getCssStyles(cssData):
 def _generateOrgListFromHtmlPage(data):
 
     orgStar = "*"
-    imageTemplate = " [image={}]"
+    imageTemplate = " [image={}] # height={}, width={}"
     soup = BeautifulSoup(data, 'html.parser')
     header = soup.find("div", {"id":"header"})
     deckName = header.text
@@ -141,7 +141,14 @@ def _generateOrgListFromHtmlPage(data):
                 # Check for images and take first
                 images = i.find_all("img")
                 if len(images) >= 1:
-                    imageText = imageTemplate.format(images[0]["src"])
+                    # Get image styles
+                    styles = images[0]["style"]
+                    searchRegex = "{}:\s[^;]*;"
+                    height = re.findall(searchRegex.format("height"), styles)[0].split(":")[1].replace(";", "").strip()
+                    width = re.findall(searchRegex.format("width"), styles)[0].split(":")[1].replace(";", "").strip()
+
+                    # Build image line
+                    imageText = imageTemplate.format(images[0]["src"], height, width)
                     lineOfText += imageText
 
                 itemText.append(lineOfText)
