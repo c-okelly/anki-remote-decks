@@ -54,8 +54,9 @@ def testParseImagesInGoogleDocs():
     with open(testFile, "r") as f:
         testFileData = f.read()
 
-    expectedData = ['* Picture example!', '**  [image=https://lh3.googleusercontent.com/gdEMfGtrSRTvbTiXwysYJ_5XxqieWt0Z9vtFw0jQxOlbjo43_PJYa4kCusZjmkbe_euwGa4KAWEo2xJvEzHkwIpVN3H-XvCxVXCpQNOcH9_tERcVodYf75t18hYlargfKgYtHYvM] # height=212.00px, width=282.00px']
+    expectedData = ['* Picture example!', '** Before  [image=https://lh6.googleusercontent.com/UqoTBxnML7twdpncSo8yjMSpD4hAHrxLy4qi0H8XUBUxzM22A48PmP3DhOlVgkJZ0e2tDGx6R_901NeRqQDry244HANqLAJl4dlFYihfTAdOmQ11Yd5tIszl5MtosTg7eMJPSLQI] after # height=95.70px, width=114.50px']
     orgPage = _generateOrgListFromHtmlPage(testFileData)["data"]
+    print(orgPage)
     assert(orgPage == expectedData)
 
 def testParseGoogleDocToAnkiDeck():
