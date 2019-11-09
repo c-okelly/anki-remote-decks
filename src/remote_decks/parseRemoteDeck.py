@@ -150,7 +150,7 @@ def _generateOrgListFromHtmlPage(data):
                         imageConfig = " # height={}, width={}".format(height, width)
 
                         # Build image line
-                        imageText = imageTemplate.format(images[0]["src"]))
+                        imageText = imageTemplate.format(images[0]["src"])
                         lineOfText += imageText
 
                 if len(imageConfig) > 0:
