@@ -91,7 +91,6 @@ def _getCssStyles(cssData):
 def _generateOrgListFromHtmlPage(data):
 
     orgStar = "*"
-    imageTemplate = " [image={}]"
     soup = BeautifulSoup(data, 'html.parser')
     header = soup.find("div", {"id":"header"})
     deckName = header.text
@@ -131,6 +130,7 @@ def _generateOrgListFromHtmlPage(data):
                 raise Exception("Could not find the correct indentation")
 
             itemText = []
+            imageConfig = ""
             for i in listItems:
                 # Get all spans
                 textSpans = i.find_all("span")
@@ -138,13 +138,26 @@ def _generateOrgListFromHtmlPage(data):
                 for span in textSpans:
                     lineOfText += _extractSpanWithStyles(span, cssStyles)
 
-                # Check for images and take first
-                images = i.find_all("img")
-                if len(images) >= 1:
-                    imageText = imageTemplate.format(images[0]["src"])
-                    lineOfText += imageText
+                    # Check for images and take first
+                    images = span.find_all("img")
+                    if len(images) >= 1:
+                        imageTemplate = " [image={}]"  # height={}, width={}
+                        # Get image styles
+                        styles = images[0]["style"]
+                        searchRegex = "{}:\s[^;]*;"
+                        height = re.findall(searchRegex.format("height"), styles)[0].split(":")[1].replace(";", "").strip()
+                        width = re.findall(searchRegex.format("width"), styles)[0].split(":")[1].replace(";", "").strip()
+                        imageConfig = " # height={}, width={}".format(height, width)
+
+                        # Build image line
+                        imageText = imageTemplate.format(images[0]["src"])
+                        lineOfText += imageText
+
+                if len(imageConfig) > 0:
+                    lineOfText += imageConfig
 
                 itemText.append(lineOfText)
+
 
             indentation += 1
             orgStars = (orgStar * indentation)
@@ -194,7 +207,7 @@ def _download(url):
         raise Exception("Failed to get url: {}".format(response.status_code))
 
     data = data.decode("utf-8")
-    data = data.replace("\xa0","")
+    data = data.replace("\xa0"," ")
     return data
 
 if __name__ == "__main__":

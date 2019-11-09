@@ -110,6 +110,10 @@ Currently the following formatting is supported:
 * Italics
 * Colors
 
+# Manage image size
+
+Images can be sized by change their size within the Google doc itself. The heigh and width in PX of the image is added to the Anki card.
+
 # Contributing
 
 The repo is not really setup up currently for contributing. 

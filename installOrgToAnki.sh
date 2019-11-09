@@ -1,7 +1,7 @@
 set -xe
 
 
-version="feature/support-for-remote-decks"
+version="master"
 orgToAnkiUrl="https://github.com/c-okelly/org_to_anki/archive/{$version}.zip"
 
 mkdir temp || true

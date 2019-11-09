@@ -54,8 +54,9 @@ def testParseImagesInGoogleDocs():
     with open(testFile, "r") as f:
         testFileData = f.read()
 
-    expectedData = ['* Picture example!', '**  [image=https://lh3.googleusercontent.com/gdEMfGtrSRTvbTiXwysYJ_5XxqieWt0Z9vtFw0jQxOlbjo43_PJYa4kCusZjmkbe_euwGa4KAWEo2xJvEzHkwIpVN3H-XvCxVXCpQNOcH9_tERcVodYf75t18hYlargfKgYtHYvM]']
+    expectedData = ['* Picture example!', '** Before  [image=https://lh6.googleusercontent.com/UqoTBxnML7twdpncSo8yjMSpD4hAHrxLy4qi0H8XUBUxzM22A48PmP3DhOlVgkJZ0e2tDGx6R_901NeRqQDry244HANqLAJl4dlFYihfTAdOmQ11Yd5tIszl5MtosTg7eMJPSLQI] after # height=95.70px, width=114.50px']
     orgPage = _generateOrgListFromHtmlPage(testFileData)["data"]
+    print(orgPage)
     assert(orgPage == expectedData)
 
 def testParseGoogleDocToAnkiDeck():
@@ -91,8 +92,8 @@ def testImageParsing_bugWhereImageIsInsertedTwice():
 
     orgData = _generateOrgListFromHtmlPage(testFileData)
 
-    print(orgData.get("data"))
-    assert(orgData.get("data") ==  ['* Question', '** <b> Text 1 </b>', '**  [image=image-1]', '* Question 2', '** Text 2', '**  [image=image-2]', '**  [image=image-3]'])
+    # print(orgData.get("data"))
+    assert(orgData.get("data") == ['* Question', '** <b> Text 1 </b>', '**  [image=image-1] # height=215.04px, width=218.50px', '* Question 2', '** Text 2', '**  [image=image-2] # height=461.33px, width=624.00px', '**  [image=image-3] # height=461.33px, width=624.00px'])
 
 def testImageParsing_multipleImagesPerAQuestion():
 
@@ -102,8 +103,8 @@ def testImageParsing_multipleImagesPerAQuestion():
 
     orgData = _generateOrgListFromHtmlPage(testFileData)
 
-    assert(orgData.get("data")[-2] == '**  [image=image-2]')
-    assert(orgData.get("data")[-1] == '**  [image=image-3]')
+    assert(orgData.get("data")[-2] == '**  [image=image-2] # height=461.33px, width=624.00px')
+    assert(orgData.get("data")[-1] == '**  [image=image-3] # height=461.33px, width=624.00px')
 
 
 def testParseCssInfo():
