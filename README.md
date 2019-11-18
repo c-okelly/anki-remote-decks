@@ -114,6 +114,26 @@ Currently the following formatting is supported:
 
 Images can be sized by change their size within the Google doc itself. The heigh and width in PX of the image is added to the Anki card.
 
+# Controlling note type 
+
+The note type can be set as follows:
+
+This would set the note to a basic and reversed type:
+
+```org
+* Question line
+# type = Basic (and reversed card)
+    * Answer line
+```
+
+This would set the note to a Cloze:
+
+```org
+* When was Dublin founded {{c1::1204}}
+# type=Cloze
+    * Extra Info
+```
+
 # Contributing
 
 The repo is not really setup up currently for contributing. 
