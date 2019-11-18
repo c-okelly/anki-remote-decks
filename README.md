@@ -134,6 +134,56 @@ This would set the note to a Cloze:
     * Extra Info
 ```
 
+# HTML list types => ```list```
+
+    * Answers on cards are displayed as list
+    * By default this will use an unordered
+
+## Unordered list (Default)
+```org
+# list=ul
+# list=unordered
+```
+
+Produces a card like below
+
+```org
+Question
+_______________________________________________________________________
+* Answer 1
+* Answer 2
+```
+
+## Ordered list 
+```org
+# list=ol
+# list=ordered
+```
+
+Produces a card like below
+
+```org
+Question
+_______________________________________________________________________
+1. Answer 1
+2. Answer 2
+```
+
+## No list 
+```org
+# list=false
+# list=None
+```
+
+Produces a card like below
+
+```org
+Question
+_______________________________________________________________________
+Answer 1
+Answer 2
+```
+
 # Contributing
 
 The repo is not really setup up currently for contributing. 
