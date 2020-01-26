@@ -65,7 +65,6 @@ def syncDecks():
 
     # Sync missing media data
     formattedMedia = ankiBridge.prepareMedia(allDeckMedia)
-    showInfo("{}".format(formattedMedia))
 
     # Add Media 
     # TODO This need to be refactored back into org_to_anki
