@@ -27,7 +27,7 @@ There are two steps:
 
 [Example Editable Google docs deck](https://docs.google.com/document/d/1fmGrSfiygvgUj2BXGMPH5PbI_M8ILh6pUfFjAZobOJQ)
 
-[Example Published Google docs deck](https://docs.google.com/document/d/e/2PACX-1vRXWGu8WvCojrLqMKsf8dTOWstrO1yLy4-8x5nkauRnMyc4iXrwkwY3BThXHc3SlCYqv8ULxup3QiOX/pub)
+[Example Published Google docs deck](https://docs.google.com/document/d/e/2PACX-1vQawILe70vt1oZCLn9SdyF9Wo0i7-gQ2owGeghXHxhjx9e8_WclLotuU8mFLglZ1QQUDnmBnhRTabte/pub)
 
 ## Creating Google doc
 
