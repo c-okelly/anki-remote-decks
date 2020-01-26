@@ -50,6 +50,7 @@ def diffAnkiDecks(orgAnkiDeck, ankiBaseDeck):
                     questionsUpdated.append({"question":question, "noteId":noteId}) 
 
     # Find question in Anki that have been deleted from remote source
+    # TODO This is super slow
     for note in storedNotes:
         storedNote = storedNotes.get(note)
         keyField = _determineKeyField(storedNote)
