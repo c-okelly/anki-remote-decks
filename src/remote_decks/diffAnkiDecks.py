@@ -66,7 +66,6 @@ def diffAnkiDecks(orgAnkiDeck, ankiBaseDeck):
             noteId = storedNote["noteId"]
             removedQuestions.append({"question":storedNote, "noteId":noteId})
 
-
     return {"newQuestions": newQuestions, "questionsUpdated": questionsUpdated, "removedQuestions": removedQuestions}
 
 
