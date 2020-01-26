@@ -258,7 +258,7 @@ def testLiveRemoteDeck():
         print()
         print(i)
 
-    assert(len(questions) == 10)
+    assert(len(questions) == 11)
 
     # Question 1 - general
     assert(questions[0].getQuestions()[0] == "Question 1")
@@ -292,3 +292,6 @@ def testLiveRemoteDeck():
 
     # Question 10 - Multi part answer
     assert(len(questions[9].getQuestions()) == 2)
+
+    # Question 10 - Multi part answer
+    assert(questions[10].getParameter("type") == "Basic (and reversed card)")
