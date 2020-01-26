@@ -39,8 +39,8 @@ def addDeck():
     # General exception
     except Exception as e:
         errorMessage = str(e)
-        # trace = traceback.format_exc()
-        # showInfo(str(trace))
+        trace = traceback.format_exc()
+        showInfo(str(trace))
         showInfo(errorTemplate.format(errorMessage))
 
     finally:
@@ -56,8 +56,8 @@ def syncDecks():
     # General exception
     except Exception as e:
         errorMessage = str(e)
-        # trace = traceback.format_exc()
-        # showInfo(str(trace))
+        trace = traceback.format_exc()
+        showInfo(str(trace))
         showInfo(errorTemplate.format(errorMessage))
 
     finally:
@@ -74,7 +74,6 @@ def removeRemote():
     except Exception as e:
         errorMessage = str(e)
         # trace = traceback.format_exc()
-        # showInfo(str(trace))
         showInfo(errorTemplate.format(errorMessage))
 
     finally:
