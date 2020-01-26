@@ -64,14 +64,8 @@ def syncDecks():
             _syncNewData(deckDiff)
 
     # Sync missing media data
-    missingMedia = []
-    # Check if media need to be loaded
-    for m in allDeckMedia:
-        if ankiBridge.checkForMediaFile(m.fileName) == False:
-            m.lazyLoadImage()
-            missingMedia.append(m)
-
-    formattedMedia = ankiBridge.prepareMedia(missingMedia)
+    formattedMedia = ankiBridge.prepareMedia(allDeckMedia)
+    showInfo("{}".format(formattedMedia))
 
     # Add Media 
     # TODO This need to be refactored back into org_to_anki

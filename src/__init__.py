@@ -51,7 +51,6 @@ def syncDecks():
     try:
         ankiBridge = getConnector()
         ankiBridge.startEditing()
-
         sDecks()
     # General exception
     except Exception as e:
@@ -61,6 +60,7 @@ def syncDecks():
         showInfo(errorTemplate.format(errorMessage))
 
     finally:
+        showInfo("Sync completed")
         ankiBridge.stopEditing()
 
 def removeRemote():
