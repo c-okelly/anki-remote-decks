@@ -27,8 +27,6 @@ If you would like me to fix it please report it here: https://github.com/c-okell
 Please be sure to provide as much information as possible. Specifically the file the caused the error.
 """
 
-# TODO add a debug mode
-
 def addDeck():
 
     try:
@@ -39,9 +37,10 @@ def addDeck():
     # General exception
     except Exception as e:
         errorMessage = str(e)
-        # trace = traceback.format_exc()
-        # showInfo(str(trace))
         showInfo(errorTemplate.format(errorMessage))
+        if ankiBridge.getConfig().get("debug",False) == True:
+            trace = traceback.format_exc()
+            showInfo(str(trace))
 
     finally:
         ankiBridge.stopEditing()
@@ -55,9 +54,10 @@ def syncDecks():
     # General exception
     except Exception as e:
         errorMessage = str(e)
-        # trace = traceback.format_exc()
-        # showInfo(str(trace))
         showInfo(errorTemplate.format(errorMessage))
+        if ankiBridge.getConfig().get("debug",False) == True:
+            trace = traceback.format_exc()
+            showInfo(str(trace))
 
     finally:
         showInfo("Sync completed")
@@ -73,9 +73,10 @@ def removeRemote():
     # General exception
     except Exception as e:
         errorMessage = str(e)
-        # trace = traceback.format_exc()
-        # showInfo(str(trace))
         showInfo(errorTemplate.format(errorMessage))
+        if ankiBridge.getConfig().get("debug",False) == True:
+            trace = traceback.format_exc()
+            showInfo(str(trace))
 
     finally:
         ankiBridge.stopEditing()
