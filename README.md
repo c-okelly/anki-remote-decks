@@ -110,6 +110,12 @@ Currently the following formatting is supported:
 * Italics
 * Colors
 
+# Using Table of contents to sort your file
+
+Users can now use a table of contents to index large files.
+
+This will allows users to create contents at the top of the file and then creating headings throughout. These will be ignored when generating questions
+
 # Manage image size
 
 Images can be sized by change their size within the Google doc itself. The heigh and width in PX of the image is added to the Anki card.
