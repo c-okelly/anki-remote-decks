@@ -170,8 +170,10 @@ def _generateOrgListFromHtmlPage(data):
                         imageText = imageTemplate.format(images[0]["src"])
                         lineOfText += imageText
 
+                # Add image metadata at end of line once
                 if len(imageConfig) > 0:
                     lineOfText += imageConfig
+                    imageConfig = ""
 
                 itemText.append(lineOfText)
 
