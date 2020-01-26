@@ -32,20 +32,12 @@ def syncDecks():
     # Get config data
     remoteData = ankiBridge.getConfig()
 
-    # To by synced later
-    allDeckMedia = []
-
     for deckKey in remoteData["remote-decks"].keys():
         currentRemoteInfo = remoteData["remote-decks"][deckKey]
 
         # Get Remote deck
         deckName = currentRemoteInfo["deckName"]
         remoteDeck = getRemoteDeck(currentRemoteInfo["url"])
-
-        # Get media and add to collection
-        deckMedia = remoteDeck.getMedia()
-        if deckMedia != None:
-            allDeckMedia.extend(deckMedia)
 
         # Update deckname to one specificed in stored data
         remoteDeck.deckName = deckName
@@ -63,21 +55,28 @@ def syncDecks():
             deckDiff = diffAnkiDecks(remoteDeck, localDeck)
             _syncNewData(deckDiff)
 
-    # Sync missing media data
-    missingMedia = []
-    # Check if media need to be loaded
-    for m in allDeckMedia:
-        if ankiBridge.checkForMediaFile(m.fileName) == False:
-            m.lazyLoadImage()
-            missingMedia.append(m)
+    # Sync all media data
+    # In future this should only sync what has been removed
+    allDeckMedia = []
 
-    formattedMedia = ankiBridge.prepareMedia(missingMedia)
+    for deckKey in remoteData["remote-decks"].keys():
+        currentRemoteInfo = remoteData["remote-decks"][deckKey]
+
+        # Get Remote deck
+        remoteDeck = getRemoteDeck(currentRemoteInfo["url"])
+        # Get media and add to collection
+        deckMedia = remoteDeck.getMedia()
+        if deckMedia != None:
+            allDeckMedia.extend(deckMedia)
+
+    formattedMedia = ankiBridge.prepareMedia(allDeckMedia)
 
     # Add Media 
     # TODO This need to be refactored back into org_to_anki
     for i in formattedMedia:
         ankiBridge.AnkiBridge.storeMediaFile(i.get("fileName"), i.get("data"))
    
+
 def _syncNewData(deckDiff):
 
     ankiBridge = getAnkiPluginConnector(remoteDefaultDeck)

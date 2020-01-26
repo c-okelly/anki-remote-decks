@@ -3,7 +3,6 @@ import codecs
 from bs4 import BeautifulSoup
 import re
 from .libs.org_to_anki.org_parser.parseData import buildNamedDeck
-from .libs.org_to_anki import config
 
 # Should get the remote deck and return an Anki Deck
 def getRemoteDeck(url):
@@ -38,15 +37,13 @@ def _determinePageType(url):
         return None
 
 
-def _parseHtmlPageToAnkiDeck(data, lazyLoadImages=False):
+def _parseHtmlPageToAnkiDeck(data):
 
     orgData = _generateOrgListFromHtmlPage(data)
     deckName = orgData["deckName"]
     data = orgData["data"]
 
     # TODO update org_to_anki to have function for this
-    # Ensure images are lazy loaded to reduce load
-    config.lazyLoadImages = True
     deck = buildNamedDeck(data, deckName)
 
     return deck
