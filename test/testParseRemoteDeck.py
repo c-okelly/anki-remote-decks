@@ -245,3 +245,13 @@ def testParseWithTableOfContentsAndSections_bothTypes():
 
     for i in questions:
         assert(i.getAnswers()[0] == "Answer")
+
+def testLiveRemoteDeck():
+
+    # TODO better assertions on the questions
+    deckUrl = "https://docs.google.com/document/d/e/2PACX-1vQawILe70vt1oZCLn9SdyF9Wo0i7-gQ2owGeghXHxhjx9e8_WclLotuU8mFLglZ1QQUDnmBnhRTabte/pub"
+    deck = getRemoteDeck(deckUrl)
+
+    questions = deck.getQuestions()
+
+    assert(len(questions) == 10)
