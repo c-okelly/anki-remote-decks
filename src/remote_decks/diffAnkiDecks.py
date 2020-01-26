@@ -50,22 +50,21 @@ def diffAnkiDecks(orgAnkiDeck, ankiBaseDeck):
                     questionsUpdated.append({"question":question, "noteId":noteId}) 
 
     # Find question in Anki that have been deleted from remote source
+    # TODO needs a method to determine what the primary field should be for a question
+    remoteQuestionKeys = set()
+    for question in orgAnkiDeck.getQuestions():
+        builtQuestion = noteBuilder.buildNote(question)
+        remoteQuestionKeys.add(builtQuestion["fields"].get("Front", None))
+        remoteQuestionKeys.add(builtQuestion["fields"].get("Text", None))
+
     for note in storedNotes:
         storedNote = storedNotes.get(note)
         keyField = _determineKeyField(storedNote)
         key = storedNote.get("fields").get(keyField)["value"]
 
-        storedQuestionFound = False
-        for question in orgAnkiDeck.getQuestions():
-            builtQuestion = noteBuilder.buildNote(question)
-
-            if key == builtQuestion["fields"].get(keyField, None):
-                storedQuestionFound = True
-
-        if storedQuestionFound == False:
+        if key not in remoteQuestionKeys:
             noteId = storedNote["noteId"]
             removedQuestions.append({"question":storedNote, "noteId":noteId})
-
 
     return {"newQuestions": newQuestions, "questionsUpdated": questionsUpdated, "removedQuestions": removedQuestions}
 

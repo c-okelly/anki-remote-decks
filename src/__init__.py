@@ -11,6 +11,7 @@ try:
     from .remote_decks.main import addNewDeck
     from .remote_decks.main import syncDecks as sDecks
     from .remote_decks.main import removeRemoteDeck as rDecks
+    from .remote_decks.libs.org_to_anki.utils import getAnkiPluginConnector as getConnector
 except:
     QAction = None
     mw = None
@@ -29,32 +30,56 @@ Please be sure to provide as much information as possible. Specifically the file
 def addDeck():
 
     try:
+        ankiBridge = getConnector()
+        ankiBridge.startEditing()
+
         addNewDeck()
     # General exception
     except Exception as e:
         errorMessage = str(e)
-        # trace = traceback.format_exc()
         showInfo(errorTemplate.format(errorMessage))
+        if ankiBridge.getConfig().get("debug",False) == True:
+            trace = traceback.format_exc()
+            showInfo(str(trace))
+
+    finally:
+        ankiBridge.stopEditing()
 
 def syncDecks():
 
     try:
+        ankiBridge = getConnector()
+        ankiBridge.startEditing()
         sDecks()
     # General exception
     except Exception as e:
         errorMessage = str(e)
-        # trace = traceback.format_exc()
         showInfo(errorTemplate.format(errorMessage))
+        if ankiBridge.getConfig().get("debug",False) == True:
+            trace = traceback.format_exc()
+            showInfo(str(trace))
+
+    finally:
+        showInfo("Sync completed")
+        ankiBridge.stopEditing()
 
 def removeRemote():
 
     try:
+        ankiBridge = getConnector()
+        ankiBridge.startEditing()
+
         rDecks()
     # General exception
     except Exception as e:
         errorMessage = str(e)
-        # trace = traceback.format_exc()
         showInfo(errorTemplate.format(errorMessage))
+        if ankiBridge.getConfig().get("debug",False) == True:
+            trace = traceback.format_exc()
+            showInfo(str(trace))
+
+    finally:
+        ankiBridge.stopEditing()
 
 if (QAction != None and mw != None):
     remoteDecksSubMenu = QMenu("Manage remote deck", mw)
