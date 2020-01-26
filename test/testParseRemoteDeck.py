@@ -254,4 +254,41 @@ def testLiveRemoteDeck():
 
     questions = deck.getQuestions()
 
+    for i in questions:
+        print()
+        print(i)
+
     assert(len(questions) == 10)
+
+    # Question 1 - general
+    assert(questions[0].getQuestions()[0] == "Question 1")
+
+    # Question 2 - sublist
+    assert(len(questions[1].getAnswers()) == 3)
+    assert(len(questions[1].getAnswers()[2]) == 1)
+
+    # Question 3 - tags
+    assert(len(questions[2].getTags()) == 3)
+
+    # Question 4 - Cloze question
+    assert(questions[3].getParameter("type") == "Cloze")
+
+    # Question 5 - general
+    assert("<img src=" in questions[4].getAnswers()[0])
+
+    # Question 6 - formatting
+    assert("font-weight:700;" in questions[5].getAnswers()[0])
+    assert("text-decoration:underline;" in questions[5].getAnswers()[2])
+    assert("color:#ff0000" in questions[5].getAnswers()[4])
+
+    # Question 7 - Special characters
+    assert(questions[6].getAnswers()[0] == "å Ä ä Ả ả Ḁ ḁ Ấ ấ Ầ")
+
+    # Question 8 - Special characters
+    assert(questions[7].getAnswers()[0] == "你好")
+
+    # Question 9 - image in question
+    assert("<img src=" in questions[8].getQuestions()[1])
+
+    # Question 10 - Multi part answer
+    assert(len(questions[9].getQuestions()) == 2)
