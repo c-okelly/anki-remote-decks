@@ -112,10 +112,24 @@ def _generateOrgListFromHtmlPage(data):
     for item in contents:
         # print(item)
         if item.name == "p":
-            # print("p")
-            lineText = item.text
-            if len(lineText) > 0:
-                orgFormattedFile.append(lineText)
+            # Get span text
+            line = ""
+            textSpans = item.find_all("span")
+            # print(textSpans)
+            for span in textSpans:
+                line += span.text
+
+            # Get link text
+            linkText = ""
+            allLinks = item.find_all("a")
+            for link in allLinks:
+                text = link.contents
+                for t in text:
+                    linkText += t
+
+            # Ignore line if span and link text are the same
+            if len(line) > 0 and linkText != line:
+                orgFormattedFile.append(line)
 
         elif item.name == "ul":
             # print("ul")

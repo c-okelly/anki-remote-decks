@@ -222,3 +222,26 @@ def testSquareBracketsThrowingError():
     print(orgData.getQuestions()[0].getAnswers()[0])
     expectedText = '<span style="font-weight:700;"> Disminuye </span> frecuencia cardiaca'
     assert(orgData.getQuestions()[0].getAnswers()[0] == expectedText)
+
+def testParseWithTableOfContentsAndSections_bothTypes():
+
+    testFile = "test/testData/tableOfContents.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    expectedData = ['# Section 1', '* subDeck 1', '** Question subDeck a', '*** Answer 1 updated!', '# Section 2', '* subDeck 2', '** Question of subDeck 2', '*** Answer 1 updated!']
+    deck = _parseHtmlPageToAnkiDeck(testFileData)
+    # for i in deck.getQuestions():
+    #     print()
+    #     print(i)
+
+    questions = deck.getQuestions()
+    assert(len(questions) == 5)
+    assert(questions[0].getQuestions()[0] == "Section 1 question")
+    assert(questions[1].getQuestions()[0] == "Section 2 question")
+    assert(questions[2].getQuestions()[0] == "Section 3.1 question")
+    assert(questions[3].getQuestions()[0] == "Section 3.2.1 question")
+    assert(questions[4].getQuestions()[0] == "Section 3.2.2 question")
+
+    for i in questions:
+        assert(i.getAnswers()[0] == "Answer")
