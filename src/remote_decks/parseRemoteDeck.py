@@ -68,6 +68,7 @@ def _getCssStyles(cssData):
         fontStyle = re.findall("{}{}{}".format(startSectionRegex, "font-style", regexValuePattern), section)
         fontWeight = re.findall("{}{}{}".format(startSectionRegex, "font-weight", regexValuePattern), section)
         textDecoration = re.findall("{}{}{}".format(startSectionRegex, "text-decoration", regexValuePattern), section)
+        verticalAlign = re.findall("{}{}{}".format(startSectionRegex, "vertical-align", regexValuePattern), section)
 
         # Ignore default values
         if (len(color) >0 and "color:#000000" in color[0]):
@@ -78,8 +79,10 @@ def _getCssStyles(cssData):
             fontStyle = []
         if (len(textDecoration) >0 and "text-decoration:none" in textDecoration[0]):
             textDecoration = []
+        if (len(verticalAlign) >0 and "vertical-align:baseline" in verticalAlign[0]):
+            verticalAlign = []
 
-        d = [color, fontStyle, fontWeight, textDecoration]
+        d = [color, fontStyle, fontWeight, textDecoration, verticalAlign]
 
         styleValues = []
         for i in d:
