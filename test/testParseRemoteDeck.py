@@ -109,7 +109,6 @@ def testImageParsing_multipleImagesPerAQuestion():
 
 def testParseCssInfo():
 
-
     testFile = "test/testData/formatting.html"
     with open(testFile, "r") as f:
         testFileData = f.read()
@@ -117,9 +116,19 @@ def testParseCssInfo():
     orgData = _generateOrgListFromHtmlPage(testFileData)
 
     # TODO this is clearly nonsense
-    expectedText = ['* Question with bold', '** one <span style="font-weight:700;"> Bold </span>one', '** <span style="font-weight:700;"> All bold </span>', '** One <span style="text-decoration:underline;"> Underlined </span>one', '** One <span style="font-weight:700;font-style:italic;"> Italics </span>one', '** One <span style="color:#ff0000;"> Red </span>one', '** One <span style="color:#0000ff;"> Blue </span>one', '** One <span style="color:#00ff00;"> Green </span>one', '** One <span style="color:#ff00ff;"> Pink </span>one']
-    # print(orgData.get("data")[-11:-2])
-    assert(orgData.get("data")[-11:-2] == expectedText) 
+    expectedText = ['* Question with bold', '** one <span style="font-weight:700;"> Bold </span>one', '** <span style="font-weight:700;"> All bold </span>', '** One <span style="text-decoration:underline;"> Underlined </span>one', '** One <span style="font-weight:700;font-style:italic;"> Italics </span>one', '** One <span style="color:#ff0000;"> Red </span>one', '** One <span style="color:#0000ff;"> Blue </span>one', '** One <span style="color:#00ff00;"> Green </span>one', '** One <span style="color:#ff00ff;"> Pink </span>one',  '** One <span style="vertical-align:super;"> superscript </span> one', '** One <span style="vertical-align:sub;"> subscript </span> one']
+    # print(orgData.get("data"))
+    data = orgData.get("data")
+    dataLength = len(expectedText)
+
+    i = 0
+    while True:
+        if data[i] == expectedText[0]:
+            break
+        i += 1
+
+    # print((orgData.get("data")[i:dataLength+i]))
+    assert(orgData.get("data")[i:dataLength+i] == expectedText) 
 
 def test_extractSpanWithStyles():
 
@@ -173,7 +182,7 @@ def testEmptyBulletPoint():
     orgData = _generateOrgListFromHtmlPage(testFileData)
     # print(orgData.get("data")[-2:])
 
-    assert(orgData.get("data")[-2:] == ['* Empty Question', '** '])
+    assert(orgData.get("data")[i:i+2] == ['* Empty Question', '** '])
 
 def testCssRegexParsing_getBothTypesOf_C_css():
 
