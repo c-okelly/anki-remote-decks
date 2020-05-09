@@ -98,8 +98,8 @@ def _generateOrgListFromHtmlPage(data):
 
     orgStar = "*"
     soup = BeautifulSoup(data, 'html.parser')
-    header = soup.find("div", {"id":"header"})
-    deckName = header.text
+    title = soup.find("div", {"id":"title"})
+    deckName = title.text
     contents = soup.find("div", {"id":"contents"})
 
     ## Try and get CSS
