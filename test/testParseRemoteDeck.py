@@ -182,7 +182,13 @@ def testEmptyBulletPoint():
     orgData = _generateOrgListFromHtmlPage(testFileData)
     # print(orgData.get("data")[-2:])
 
-    assert(orgData.get("data")[i:i+2] == ['* Empty Question', '** '])
+    i = 0
+    for k in orgData.get("data"):
+        if k == "* Empty question":
+            break
+        i += 1
+    # print(orgData.get("data")[i:])
+    assert(orgData.get("data")[i:] == ['* Empty question', '** '])
 
 def testCssRegexParsing_getBothTypesOf_C_css():
 
