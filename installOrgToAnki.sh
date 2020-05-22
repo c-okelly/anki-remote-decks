@@ -3,7 +3,7 @@ set -xe
 
 
 version="master"
-orgToAnkiUrl="https://github.com/c-okelly/org_to_anki/archive/{$version}.zip"
+orgToAnkiUrl="https://github.com/c-okelly/org_to_anki/archive/${version}.zip"
 
 mkdir temp || true
 rm -rf temp/*

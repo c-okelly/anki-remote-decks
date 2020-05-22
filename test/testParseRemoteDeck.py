@@ -236,7 +236,8 @@ def testSquareBracketsThrowingError():
     orgData = _parseHtmlPageToAnkiDeck(testFileData)
     expectedText = '<span style="font-weight:700;"> Disminuye </span> frecuencia cardiaca'
     actualText = orgData.getQuestions()[0].getAnswers()[0] 
-    print(expectedText, actualText)
+    print(actualText)
+    print(expectedText)
     assert(actualText == expectedText)
 
 def testParseWithTableOfContentsAndSections_bothTypes():
