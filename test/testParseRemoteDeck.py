@@ -237,7 +237,9 @@ def testSquareBracketsThrowingError():
     expectedText = '<span style="font-weight:700;"> Disminuye </span> frecuencia cardiaca'
     actualText = orgData.getQuestions()[0].getAnswers()[0] 
     print(actualText)
+    print(len(actualText))
     print(expectedText)
+    print(len(expectedText))
     assert(actualText == expectedText)
 
 def testParseWithTableOfContentsAndSections_bothTypes():
