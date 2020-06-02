@@ -216,20 +216,37 @@ Github user fneurohr22
 # Change log
 
 2020/04/-7 - Release of Version V1.5.2 => Fix delete issues
+
 2020/01/26 - Release of Version V1.5.1 => Bugfix
+
 2020/01/26 - Release of Version V1.5.0 => Check for default models and fix image metadata bug
+
 2020/01/26 - Release of Version V1.4.1 => Support table of contents
+
 2020/01/26 - Release of Version V1.4.0 => Improved Sync and add speed. Debug mode added
+
 2020/01/25 - Release of Version V1.3.1 => Unicode bugfix
+
 2019/11/09 - Release of Version V1.3.0 => Warning and image bugfix
+
 2019/10/21 – Release of Version V1.2.2 => Brackets and formatting bugs
+
 2019/09/30 – Release of Version V1.2.1 => Image bugfixes
+
 2019/09/25 – Release of Version V1.2.0 => Unicode and formatting bugfixes
+
 2019/09/08 – Release of Version V1.2.0 => Formatting for color, bold, italics and underline is now also parsed
+
 2019/08/30 – Release of Version V1.1.1 => Bugfix the resulted in double images
+
 2019/08/29 – Release of Version V1.1.1 => Bugfix in org_to_anki
+
 2019/08/28 – Release of Version V1.1.0 => Bugfix in org_to_anki
+
 2019/08/28 – Release of Version V1.0.1 => Improve error handling
+
 2019/08/28 – Release of Version V1.0.0 => Support for Cloze and image
-2019/06/2 – Release of Alpha version V0.1.0 
+
+2019/06/2 – Release of Alpha version V0.1.0
+
 2019/06/2 – Release of Beta version V0.0.1 
