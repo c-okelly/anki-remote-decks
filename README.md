@@ -78,7 +78,10 @@ The new deck will be added to Anki.
 # Adding new content and syncing decks to update with changes
 
 Go to the original Google doc and make the changes you wish to see.
-It can take up to 5 minutes for changes to be published to the public version. Keep checking until you see your changes.
+
+**It can take up to 5 minutes for changes to be published to the public version.**
+
+Keep checking until you see your changes.
 
 To sync all current remote decks:
 
