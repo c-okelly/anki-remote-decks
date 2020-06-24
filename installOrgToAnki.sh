@@ -1,9 +1,13 @@
 #!/bin/bash
 set -xe
 
+source orgVersion.txt
+if [ -z "${ORG_VERSION}" ]
+    then
+    echo "No Version found" && exit 1;
+fi
 
-version="master"
-orgToAnkiUrl="https://github.com/c-okelly/org_to_anki/archive/${version}.zip"
+orgToAnkiUrl="https://github.com/c-okelly/org_to_anki/archive/${ORG_VERSION}.zip"
 
 mkdir temp || true
 rm -rf temp/*
