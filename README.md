@@ -139,9 +139,11 @@ This would set the note to a Cloze:
 
 ```org
 * When was Dublin founded {{c1::1204}}
-# type=Cloze
+* # type=Cloze
     * Extra Info
 ```
+
+Cloze notes are a special case where the comment line can be bullet pointed. Trying to get the second indentation for the `Extra field` is too difficult in Google Sheets otherwise.
 
 # HTML list types => ```list```
 
