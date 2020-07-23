@@ -100,18 +100,48 @@ def testCommentLineWithBulletPoint():
     testFile = "test/testData/commentBulletPointLine.html"
     with open(testFile, "r") as f:
         testFileData = f.read()
-
     orgData = _generateOrgListFromHtmlPage(testFileData)
-
-    for i in orgData.get("data"):
-        print(i)
 
     assert(orgData.get("data")[2] == "# type = Cloze") 
 
-
 def testMultiLineComment():
 
-    pass
+    testFile = "test/testData/multilineComments.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+    orgData = _generateOrgListFromHtmlPage(testFileData)
+    data = orgData.get("data")
+
+    assert(len(data) == 4)
+    for line in data:
+        if "Question in multiline comments" in line:
+            assert(False)
+
+def testMultiLineComment_noEnd():
+
+    testFile = "test/testData/multilineComments_noEnd.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+    orgData = _generateOrgListFromHtmlPage(testFileData)
+    data = orgData.get("data")
+
+    assert(len(data) == 2)
+    for line in data:
+        if "Question in multiline comments" in line:
+            assert(False)
+
+def testMultiLineComment_noQuestionAfter():
+
+    testFile = "test/testData/multilineComments_noQuestionAfter.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+    orgData = _generateOrgListFromHtmlPage(testFileData)
+    data = orgData.get("data")
+
+    assert(len(data) == 2)
+    for line in data:
+        if "Question in multiline comments" in line:
+            assert(False)
 
 def testImageParsing_multipleImagesPerAQuestion():
 

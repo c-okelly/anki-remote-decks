@@ -111,9 +111,20 @@ def _generateOrgListFromHtmlPage(data):
         styleSection = _getCssStyles(cssData)
         cssStyles.update(styleSection)
 
+    multiCommentSection = False
     orgFormattedFile = []
     for item in contents:
-        # print(item)
+        # Handle multiLine comment section
+        if _startOfMultiLineComment(item):
+            multiCommentSection = True
+            continue
+        elif multiCommentSection and _endOfMultiLineComment(item):
+            multiCommentSection = False
+            continue
+        elif multiCommentSection:
+            continue
+
+        # Handle normal line
         if item.name == "p":
             # Get span text
             line = ""
@@ -134,6 +145,7 @@ def _generateOrgListFromHtmlPage(data):
             if len(line) > 0 and linkText != line:
                 orgFormattedFile.append(line)
 
+        # Hanlde list line
         elif item.name == "ul":
             # print("ul")
             listItems = item.find_all("li")
@@ -205,6 +217,29 @@ def _closeLineBreak(line):
         return True 
     return False 
     
+def _startOfMultiLineComment(item):
+    
+    # Get span text
+    if item.name == "p":
+        line = ""
+        sections = item.find_all("span")
+        for span in sections:
+            line += span.text
+        if ("#multilinecommentstart" == line.replace(" ", "").lower()):
+            return True 
+    return False
+
+def _endOfMultiLineComment(item):
+    
+    # Get span text
+    if item.name == "p":
+        line = ""
+        sections = item.find_all("span")
+        for span in sections:
+            line += span.text
+        if ("#multilinecommentend" == line.replace(" ", "").lower()):
+            return True 
+    return False
 
 def _extractSpanWithStyles(soupSpan, cssStyles):
 
