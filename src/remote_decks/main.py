@@ -11,6 +11,7 @@ except:
     mw = None
     pass
 
+import sys
 # Project deps
 from .diffAnkiDecks import diffAnkiDecks
 from .parseRemoteDeck import getRemoteDeck
@@ -36,32 +37,36 @@ def syncDecks():
     allDeckMedia = []
 
     for deckKey in remoteData["remote-decks"].keys():
-        currentRemoteInfo = remoteData["remote-decks"][deckKey]
+        try:
+            currentRemoteInfo = remoteData["remote-decks"][deckKey]
 
-        # Get Remote deck
-        deckName = currentRemoteInfo["deckName"]
-        remoteDeck = getRemoteDeck(currentRemoteInfo["url"])
+            # Get Remote deck
+            deckName = currentRemoteInfo["deckName"]
+            remoteDeck = getRemoteDeck(currentRemoteInfo["url"])
 
-        # Get media and add to collection
-        deckMedia = remoteDeck.getMedia()
-        if deckMedia != None:
-            allDeckMedia.extend(deckMedia)
+            # Get media and add to collection
+            deckMedia = remoteDeck.getMedia()
+            if deckMedia != None:
+                allDeckMedia.extend(deckMedia)
 
-        # Update deckname to one specificed in stored data
-        remoteDeck.deckName = deckName
+            # Update deckname to one specificed in stored data
+            remoteDeck.deckName = deckName
 
-        # Get current deck
-        deckName = baseDeck + deckJoiner + deckName
-        localDeck = {"result":ankiBridge.getDeckNotes(deckName)}
+            # Get current deck
+            deckName = baseDeck + deckJoiner + deckName
+            localDeck = {"result":ankiBridge.getDeckNotes(deckName)}
 
-        # Local deck has no cards
-        if localDeck["result"] == []:
-            ankiBridge.uploadNewDeck(remoteDeck)
-            showInfo("Deck has no cards. Uploading {}".format(deckName))
-        else:
-            # Diff decks and sync
-            deckDiff = diffAnkiDecks(remoteDeck, localDeck)
-            _syncNewData(deckDiff)
+            # Local deck has no cards
+            if localDeck["result"] == []:
+                ankiBridge.uploadNewDeck(remoteDeck)
+                showInfo("Deck has no cards. Uploading {}".format(deckName))
+            else:
+                # Diff decks and sync
+                deckDiff = diffAnkiDecks(remoteDeck, localDeck)
+                _syncNewData(deckDiff)
+        except Exception as e:
+            deckMessage = "\nThe following deck failed to sync: {}".format(deckName)
+            raise type(e)(str(e) + deckMessage).with_traceback(sys.exc_info()[2])
 
     # Sync missing media data
     formattedMedia = ankiBridge.prepareMedia(allDeckMedia)
