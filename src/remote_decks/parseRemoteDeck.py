@@ -184,8 +184,12 @@ def _generateOrgListFromHtmlPage(data):
             indentation += 1
             orgStars = (orgStar * indentation)
             for line in itemText:
-                formattedListItem = "{} {}".format(orgStars, line)
-                orgFormattedFile.append(formattedListItem)
+                if (_closeLineBreak(line)):
+                    orgFormattedFile.append(line)
+                else:
+                    formattedListItem = "{} {}".format(orgStars, line)
+                    orgFormattedFile.append(formattedListItem)
+
 
 
         else:
@@ -193,6 +197,14 @@ def _generateOrgListFromHtmlPage(data):
             # print("Unknown line type: {}".format(item.name))
 
     return {"deckName":deckName, "data":orgFormattedFile}
+
+### Special cases ###
+def _closeLineBreak(line):
+    # Case to support Cloze cards
+    if ("#type=cloze" == line.replace(" ", "").lower()):
+        return True 
+    return False 
+    
 
 def _extractSpanWithStyles(soupSpan, cssStyles):
 

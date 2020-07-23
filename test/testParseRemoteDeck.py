@@ -95,6 +95,24 @@ def testImageParsing_bugWhereImageIsInsertedTwice():
     # print(orgData.get("data"))
     assert(orgData.get("data") == ['* Question', '** <b> Text 1 </b>', '**  [image=image-1] # height=215.04px, width=218.50px', '* Question 2', '** Text 2', '**  [image=image-2] # height=461.33px, width=624.00px', '**  [image=image-3] # height=461.33px, width=624.00px'])
 
+def testCommentLineWithBulletPoint():
+
+    testFile = "test/testData/commentBulletPointLine.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    orgData = _generateOrgListFromHtmlPage(testFileData)
+
+    for i in orgData.get("data"):
+        print(i)
+
+    assert(orgData.get("data")[2] == "# type = Cloze") 
+
+
+def testMultiLineComment():
+
+    pass
+
 def testImageParsing_multipleImagesPerAQuestion():
 
     testFile = "test/testData/double.html"
