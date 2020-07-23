@@ -195,6 +195,31 @@ Answer 1
 Answer 2
 ```
 
+# Multiline comments
+
+Multi line comments are now supports. This allows you to mark an entire section to be ignored and add non Anki related data.
+
+To start multiline comments:
+```multilineCommentStart```
+
+To stop multiline comments:
+```multilineCommentStart```
+
+```org
+* Question before multiline comment
+  * Answer before multiline comment
+
+# multilineCommentStart
+
+* Question in multiline comments
+  * Answer in multiline comment
+
+# multilineCommentEnd
+
+* Question after multiline comment
+  * Answer after multiline comment
+```
+
 # Contributing
 
 The repo is not really setup up currently for contributing. 
