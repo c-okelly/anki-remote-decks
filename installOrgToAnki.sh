@@ -11,7 +11,7 @@ orgToAnkiUrl="https://github.com/c-okelly/org_to_anki/archive/${ORG_VERSION}.zip
 
 mkdir temp || true
 rm -rf temp/*
-curl -L ${orgToAnkiUrl} -o temp/temp_org_to_anki.zip
+curl -f -H 'Cache-Control: no-cache' -L ${orgToAnkiUrl} -o temp/temp_org_to_anki.zip
 
 # Unzip
 unzip temp/temp_org_to_anki -d temp
