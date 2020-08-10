@@ -1,4 +1,5 @@
 #!/bin/bash
+set -xe
 
 source orgVersion.txt
 if [ -z "${ORG_VERSION}" ]
