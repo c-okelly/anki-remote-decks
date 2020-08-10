@@ -124,6 +124,13 @@ def addNewDeck():
     if okPressed == False:
         return
 
+    # TODO 
+    # Determine url type
+    # If csv pull in extra data
+    itemlist = ("Red","Blue","Green")
+    item, okPressed = QInputDialog.getItem(mw, "Get item","Color:", itemlist, 0, False)
+    print(item)
+
     # Get data and build deck
     ankiBridge = getAnkiPluginConnector(remoteDefaultDeck)
 

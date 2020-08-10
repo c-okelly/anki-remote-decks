@@ -1,3 +1,15 @@
+try:
+    # import the main window object (mw) from aqt
+    from aqt import mw
+    # import the "show info" tool from utils.py
+    from aqt.utils import showInfo
+    # import all of the Qt GUI library
+    from aqt.qt import *
+except:
+    QAction = None
+    mw = None
+    pass
+
 import requests
 import codecs
 from bs4 import BeautifulSoup
@@ -6,11 +18,11 @@ from .libs.org_to_anki.org_parser.parseData import buildNamedDeck
 from .libs.org_to_anki import config
 
 # Should get the remote deck and return an Anki Deck
-def getRemoteDeck(url):
+def getRemoteDeck(url, type):
 
     # Get remote page
     # TODO Validate url before getting data
-    if url.startswith('https://docs.google.com/') and not url.endswith('pub'):
+    if url.startswith('https://docs.google.com/') and not _UrlEndingIsValid(url):
         raise Exception("Use the Publish link, not the Sharing link")
     pageType = _determinePageType(url)
     deck = None
@@ -19,11 +31,30 @@ def getRemoteDeck(url):
         deck = _parseHtmlPageToAnkiDeck(data)
 
     elif pageType == "csv":
-        pass
+
+        # TODO need more data from the user about which sheet to get
+
+        # Start with single page usecase
+        data = _downloadCSV(url)
+        # Get data and ask the user what they want done with it
+        _parseCSVFileToDeck(data)
+
     else:
         raise Exception("url is not a Google doc or csv file")
         
     return deck
+
+def _UrlEndingIsValid(url):
+
+    print(url)
+    if url.endswith('pub'):
+        return True
+    elif url.endswith('pubhtml'):
+        return True
+    elif url.split("?")[0].endswith('pubhtml'): #TODO Single page usecase remove after
+        return True
+
+    return False
 
 def _determinePageType(url):
 
@@ -37,6 +68,50 @@ def _determinePageType(url):
     else:
         return None
 
+
+def _parseCSVFileToDeck(data):
+
+    soup = BeautifulSoup(data, 'html.parser')
+    title = soup.find("div", {"id":"doc-title"})
+    deckName = title.text
+
+    tableBody = soup.find("tbody")
+    tableRows = tableBody.findAll("tr")
+    # Get all rows
+    allRows = []
+    for htmlRow in tableRows:
+        row = []
+        columns = htmlRow.findAll("td")
+        for cell in columns:
+            # TODO do we care about formatting?
+            cellContents = str(cell.text)
+            row.append(cellContents)
+        allRows.append(row)
+
+    # TODO does user select the card type?
+    
+    # Determine card type
+    # Check for field name
+    for row in allRows:
+        if _isSettingsRow(row):
+            # Get settings data
+            pass
+        if _emptyRow(row):
+            continue
+        print(row)
+
+def _isSettingsRow(row):
+
+    if (len(row) > 0 and len(row[0]) > 0) and row[0].strip()[0] == "#":
+        return True
+    return False
+
+def _emptyRow(row):
+
+    for i in row:
+        if len(i) > 0:
+            return False
+    return True
 
 def _parseHtmlPageToAnkiDeck(data, lazyLoadImages=False):
 
@@ -266,6 +341,21 @@ def _extractSpanWithStyles(soupSpan, cssStyles):
         return styledText
     else:
         return text
+
+def _downloadCSV(url):
+
+    # TODO Validate that we have a single pace format and html format
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.content
+    else:
+        raise Exception("Failed to get url: {}".format(response.status_code))
+
+    # TODO do we still need this?
+    data = data.decode("utf-8")
+    # data = data.replace("\xa0"," ")
+
+    return data
 
 def _download(url):
 

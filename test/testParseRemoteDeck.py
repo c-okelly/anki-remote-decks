@@ -10,6 +10,7 @@ from src.remote_decks.parseRemoteDeck import _parseHtmlPageToAnkiDeck
 from src.remote_decks.parseRemoteDeck import _determinePageType
 from src.remote_decks.parseRemoteDeck import _extractSpanWithStyles
 from src.remote_decks.parseRemoteDeck import _getCssStyles
+from src.remote_decks.parseRemoteDeck import _downloadCSV
 
 def testDetermineFileType():
 
@@ -362,3 +363,26 @@ def testLiveRemoteDeck():
 
     # Question 10 - Multi part answer
     assert(questions[10].getParameter("type") == "Basic (and reversed card)")
+
+
+# def testParsingCSVFiles():
+
+#     # multi sheet CSV html page
+#     url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzasKiyxozD_M2U9nmdWVlARDQ3rl2nSj3gIktQ6Hm1tYbobAeXBwdYO_0ZVJNfPU-eFwi76Pf2Umc/pubhtml"
+
+#     deck = getRemoteDeck(url)
+#     print(deck)
+#     assert(False)
+
+def testParsingSingleSheetCSVFilesProducesTable():
+
+    # multi sheet CSV html page
+    # url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzasKiyxozD_M2U9nmdWVlARDQ3rl2nSj3gIktQ6Hm1tYbobAeXBwdYO_0ZVJNfPU-eFwi76Pf2Umc/pubhtml"
+    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQzasKiyxozD_M2U9nmdWVlARDQ3rl2nSj3gIktQ6Hm1tYbobAeXBwdYO_0ZVJNfPU-eFwi76Pf2Umc/pubhtml?gid=0&single=true"
+    data = _downloadCSV(url)
+
+    print(data)
+    assert(False)
+
+    # TODO assert deck name is equal to sheet
+    # TODO assert 
