@@ -203,7 +203,7 @@ To start multiline comments:
 ```multilineCommentStart```
 
 To stop multiline comments:
-```multilineCommentStart```
+```multilineCommentEnd```
 
 ```org
 * Question before multiline comment
