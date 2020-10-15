@@ -36,6 +36,16 @@ def testDownloadWebPage():
     data = _download(url)
     assert(data[0:15] == '<!doctype html>')
 
+def testParseNewGoogleDocToOrgFile():
+
+    # New format as of 14/10/20
+    testFile = "test/testData/newDeck.html"
+    with open(testFile, "r") as f:
+        testFileData = f.read()
+
+    expectedData = ['* Question', '** Reply']
+    orgPage = _generateOrgListFromHtmlPage(testFileData)["data"]
+    assert(orgPage == expectedData)
 
 def testParseGoogleDocToOrgFile():
 
@@ -46,8 +56,6 @@ def testParseGoogleDocToOrgFile():
     expectedData = ['Test', '# Test', '* Level 1', '** Level 2', '*** Level 3', '**** Level 4', '* Level 1.1', '** Level 2.1']
     orgPage = _generateOrgListFromHtmlPage(testFileData)["data"]
     assert(orgPage == expectedData)
-
-
 
 def testParseImagesInGoogleDocs():
     testFile = "test/testData/image_data.html"
@@ -322,7 +330,6 @@ def testLiveRemoteDeck():
     questions = deck.getQuestions()
 
     for i in questions:
-        print()
         print(i)
 
     assert(len(questions) == 11)
