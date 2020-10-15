@@ -38,8 +38,7 @@ def testDownloadWebPage():
 
 def testParseNewGoogleDocToOrgFile():
 
-    # New format as of 14/10/20
-    testFile = "test/testData/newDeck.html"
+    testFile = "test/testData/testDeckNewFormat.html"
     with open(testFile, "r") as f:
         testFileData = f.read()
 
