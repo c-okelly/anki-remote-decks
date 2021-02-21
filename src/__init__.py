@@ -5,6 +5,7 @@ try:
     from aqt import mw
     # import the "show info" tool from utils.py
     from aqt.utils import showInfo
+    from aqt.utils import shortcut
     # import all of the Qt GUI library
     from aqt.qt import *
     from aqt.importing import ImportDialog
@@ -87,15 +88,18 @@ if (QAction != None and mw != None):
 
     # set it to call testFunction when it's clicked
     remoteDeckAction = QAction("Add new remote Deck", mw)
+    remoteDeckAction.setShortcut(QKeySequence("Ctrl+Shift+V"))
     remoteDeckAction.triggered.connect(addDeck)
     remoteDecksSubMenu.addAction(remoteDeckAction)
 
     # Sync remote decks
     syncDecksAction = QAction("Sync remote decks", mw)
+    syncDecksAction.setShortcut(QKeySequence("Ctrl+Shift+S"))
     syncDecksAction.triggered.connect(syncDecks)
     remoteDecksSubMenu.addAction(syncDecksAction)
 
     # Remove remote deck
     removeRemoteDeck = QAction("Remove remote deck", mw)
+    removeRemoteDeck.setShortcut(QKeySequence("Ctrl+Shift+D"))
     removeRemoteDeck.triggered.connect(removeRemote)
     remoteDecksSubMenu.addAction(removeRemoteDeck)
